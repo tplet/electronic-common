@@ -1,0 +1,10 @@
+
+# RF24
+remove_path(FILES_CPP /RF24/examples)
+remove_path(FILES_H /RF24/examples)
+
+# StandardCplusplus
+remove_path(FILES_CPP /StandardCplusplus/examples)
+remove_path(FILES_H /StandardCplusplus/examples)
+remove_path(FILES_CPP /StandardCplusplus)
+remove_path(FILES_H /StandardCplusplus)
