@@ -44,6 +44,11 @@ namespace com
                     void setId(byte id);
 
                     /**
+                     * Set packet identifier to next value
+                     */
+                    void nextId();
+
+                    /**
                      * Get sensor identifier
                      */
                     byte getSensor();

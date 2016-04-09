@@ -2,6 +2,7 @@
 // Created by Thibault PLET <thibault.plet@gmail.com> on 01/04/2016.
 //
 #include "Packet.h"
+#include "IDGenerator.h"
 
 typedef unsigned char byte;
 
@@ -102,6 +103,14 @@ namespace com
                 void Packet::setData(int data)
                 {
                     this->data = data;
+                }
+
+                /**
+                 * Set packet identifier by using next uniq identifier
+                 */
+                void Packet::nextId()
+                {
+                    this->setId(com::osteres::automation::sensor::IDGenerator::getNextId());
                 }
             }
         }
