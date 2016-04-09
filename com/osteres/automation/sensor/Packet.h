@@ -5,7 +5,7 @@
 #ifndef COM_OSTERES_AUTOMATION_SENSOR_PACKET_H
 #define COM_OSTERES_AUTOMATION_SENSOR_PACKET_H
 
-#include "Arduino.h"
+typedef unsigned char byte;
 
 namespace com
 {

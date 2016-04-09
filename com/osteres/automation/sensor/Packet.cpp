@@ -1,9 +1,9 @@
 //
 // Created by Thibault PLET <thibault.plet@gmail.com> on 01/04/2016.
 //
-#include "Arduino.h"
 #include "Packet.h"
 
+typedef unsigned char byte;
 
 namespace com
 {
