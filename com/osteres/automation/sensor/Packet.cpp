@@ -13,38 +13,96 @@ namespace com
         {
             namespace sensor
             {
-/**
- * Constructor
- */
-Packet::Packet()
-{
-    id = 0x0;
-    sensor = 0x0;
-    date = 0;
-    data = 0;
-}
+                /**
+                 * Constructor
+                 */
+                Packet::Packet()
+                {
+                    this->id = 0x0;
+                    this->sensor = 0x0;
+                    this->date = 0;
+                    this->data = 0;
+                }
 
-/*Packet::Packet(byte s, byte i)
-{
-    sensor = s;
-    id = i;
-}*/
+                Packet::Packet(byte s, byte i)
+                {
+                    this->sensor = s;
+                    this->id = i;
+                    this->date = 0;
+                    this->data = 0;
+                }
 
-/**
- * Get identifier
- */
-byte Packet::getId()
-{
-    return id;
-}
+                /**
+                 * Destructor
+                 */
+                Packet::~Packet()
+                {
+                    // Nothing to do
+                }
 
-/**
- * Set identifier
- */
-void Packet::setId(byte i)
-{
-    id = i;
-}
+                /**
+                 * Get identifier
+                 */
+                byte Packet::getId()
+                {
+                    return this->id;
+                }
+
+                /**
+                 * Set identifier
+                 */
+                void Packet::setId(byte i)
+                {
+                    this->id = i;
+                }
+
+                /**
+                 * Get sensor identifier
+                 */
+                byte Packet::getSensor()
+                {
+                    return this->sensor;
+                }
+
+                /**
+                 * Set sensor identifier
+                 */
+                void Packet::setSensor(byte sensor)
+                {
+                    this->sensor = sensor;
+                }
+
+                /**
+                 * Get timestamp associated to data
+                 */
+                int Packet::getDate()
+                {
+                    return this->date;
+                }
+
+                /**
+                 * Set timestamp associated to data
+                 */
+                void Packet::setDate(int date)
+                {
+                    this->date = date;
+                }
+
+                /**
+                 * Get data
+                 */
+                int Packet::getData()
+                {
+                    return this->data;
+                }
+
+                /**
+                 * Set data
+                 */
+                void Packet::setData(int data)
+                {
+                    this->data = data;
+                }
             }
         }
     }

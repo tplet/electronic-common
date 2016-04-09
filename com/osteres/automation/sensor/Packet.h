@@ -15,87 +15,87 @@ namespace com
         {
             namespace sensor
             {
-class Packet
-{
-public:
-    /**
-     * Constructor
-     */
-    Packet();
+                class Packet
+                {
+                public:
+                    /**
+                     * Constructor
+                     */
+                    Packet();
 
-    /**
-     * Constructor with sensor and id
-     */
-    //Packet(byte sensor, byte id);
+                    /**
+                     * Constructor with sensor and id
+                     */
+                    Packet(byte sensor, byte id);
 
-    /**
-     * Destructor
-     */
-    //~Packet();
+                    /**
+                     * Destructor
+                     */
+                    ~Packet();
 
-    /**
-     * Get packet identifier
-     */
-    byte getId();
+                    /**
+                     * Get packet identifier
+                     */
+                    byte getId();
 
-    /**
-     * Set packet identifier
-     */
-    void setId(byte id);
+                    /**
+                     * Set packet identifier
+                     */
+                    void setId(byte id);
 
-    /**
-     * Get sensor identifier
-     */
-    //byte getSensor();
+                    /**
+                     * Get sensor identifier
+                     */
+                    byte getSensor();
 
-    /**
-     * Set sensor identifier
-     */
-    //void setSensor(byte sensor);
+                    /**
+                     * Set sensor identifier
+                     */
+                    void setSensor(byte sensor);
 
-    /**
-     * Get timestamp associated to data
-     */
-    //int getDate();
+                    /**
+                     * Get timestamp associated to data
+                     */
+                    int getDate();
 
-    /**
-     * Set timestamp associated to data
-     */
-    //void setDate(int date);
+                    /**
+                     * Set timestamp associated to data
+                     */
+                    void setDate(int date);
 
-    /**
-     * Get data
-     */
-    //int getData();
+                    /**
+                     * Get data
+                     */
+                    int getData();
 
-    /**
-     * Set data
-     */
-    //void setData(int data);
+                    /**
+                     * Set data
+                     */
+                    void setData(int data);
 
 
-protected:
-    /**
-     * Packet identifier (uniq for each running sensor)
-     */
-    byte id;
+                protected:
+                    /**
+                     * Packet identifier (uniq for each running sensor)
+                     */
+                    byte id;
 
-    /**
-     * Sensor identifier (uniq for all automation park)
-     */
-    byte sensor;
+                    /**
+                     * Sensor identifier (uniq for all automation park)
+                     */
+                    byte sensor;
 
-    /**
-     * Timestamp associated to data
-     */
-    int date;
+                    /**
+                     * Timestamp associated to data
+                     */
+                    int date;
 
-    /**
-     * Data sended
-     */
-    int data;
+                    /**
+                     * Data sended
+                     */
+                    int data;
 
-};
+                };
             }
         }
     }
