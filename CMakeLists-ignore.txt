@@ -1,7 +1,7 @@
 
-# RF24
-remove_path(FILES_CPP /RF24/examples)
-remove_path(FILES_H /RF24/examples)
+# RF24 (automatically detected by arduino clion plugin)
+remove_path(FILES_CPP /RF24/)
+remove_path(FILES_H /RF24/)
 
 # StandardCplusplus
 remove_path(FILES_CPP /StandardCplusplus/examples)

@@ -8,6 +8,7 @@ set(${NAME}_RECURSE True)
 file(GLOB_RECURSE FILES_CPP "*.cpp")
 file(GLOB_RECURSE FILES_H "*.h")
 
+# Ignores some paths
 include(CMakeLists-ignore.txt)
 
 # Generate
