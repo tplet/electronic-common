@@ -8,3 +8,7 @@ remove_path(FILES_CPP /StandardCplusplus/examples)
 remove_path(FILES_H /StandardCplusplus/examples)
 remove_path(FILES_CPP /StandardCplusplus)
 remove_path(FILES_H /StandardCplusplus)
+
+# RTClib
+remove_path(FILES_CPP /RTClib/examples)
+remove_path(FILES_H /RTClib/examples)
