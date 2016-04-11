@@ -30,7 +30,7 @@ namespace com
                     /**
                      * @static
                      *
-                     * Get next packet identifier
+                     * Get next request identifier
                      */
                     static byte getNextId();
                 };

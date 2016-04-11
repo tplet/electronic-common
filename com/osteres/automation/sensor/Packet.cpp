@@ -4,7 +4,6 @@
 #include <stdint.h>
 #include "Packet.h"
 #include "IDGenerator.h"
-#include <string.h>
 
 typedef uint8_t byte;
 
@@ -21,16 +20,22 @@ namespace com
                  */
                 Packet::Packet()
                 {
-                    this->id = 0x0;
-                    this->sensor = 0x0;
+                    this->resetData();
+                    this->sensor = 0;
+                    this->id = 0;
                     this->date = 0;
+                    this->target = 0;
+                    this->command = 0;
                 }
 
                 Packet::Packet(byte s, byte i)
                 {
+                    this->resetData();
                     this->sensor = s;
                     this->id = i;
                     this->date = 0;
+                    this->target = 0;
+                    this->command = 0;
                 }
 
                 /**
@@ -74,6 +79,38 @@ namespace com
                 }
 
                 /**
+                 * Get command identifier
+                 */
+                byte Packet::getCommand()
+                {
+                    return this->command;
+                }
+
+                /**
+                 * Set command identifier
+                 */
+                void Packet::setCommand(byte command)
+                {
+                    this->command = command;
+                }
+
+                /**
+                 * Get target of request
+                 */
+                byte Packet::getTarget()
+                {
+                    return this->target;
+                }
+
+                /**
+                 * Set target of request
+                 */
+                void Packet::setTarget(byte target)
+                {
+                    this->target = target;
+                }
+
+                /**
                  * Get timestamp associated to data
                  */
                 unsigned long int Packet::getDate()
@@ -101,12 +138,6 @@ namespace com
                 byte Packet::getDataByte4()
                 { return this->dataByte4; }
 
-                byte Packet::getDataByte5()
-                { return this->dataByte5; }
-
-                byte Packet::getDataByte6()
-                { return this->dataByte6; }
-
                 void Packet::setDataByte1(byte data)
                 { this->dataByte1 = data; }
 
@@ -118,12 +149,6 @@ namespace com
 
                 void Packet::setDataByte4(byte data)
                 { this->dataByte4 = data; }
-
-                void Packet::setDataByte5(byte data)
-                { this->dataByte5 = data; }
-
-                void Packet::setDataByte6(byte data)
-                { this->dataByte6 = data; }
 
                 long Packet::getDataLong1()
                 { return this->dataLong1; }
@@ -174,11 +199,35 @@ namespace com
                 { this->dataChart4 = data; }
 
                 /**
-                 * Set packet identifier by using next uniq identifier
+                 * Set request identifier by using next uniq identifier
                  */
                 void Packet::nextId()
                 {
                     this->setId(com::osteres::automation::sensor::IDGenerator::getNextId());
+                }
+
+                /**
+                 * Reset all data contained into request
+                 */
+                void Packet::resetData()
+                {
+                    // Byte
+                    this->setDataByte1(0);
+                    this->setDataByte2(0);
+                    this->setDataByte3(0);
+                    this->setDataByte4(0);
+
+                    // Long
+                    this->setDataLong1(0);
+                    this->setDataLong2(0);
+                    this->setDataLong3(0);
+                    this->setDataLong4(0);
+
+                    // Char
+                    this->setDataChar1(0);
+                    this->setDataChar2(0);
+                    this->setDataChar3(0);
+                    this->setDataChar4(0);
                 }
             }
         }
