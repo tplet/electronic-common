@@ -28,11 +28,17 @@ namespace com
                      */
                     static byte const MASTER = 0x00;
                     /**
+                     * All sensor
+                     * Special sensor id to indicate that the target is all sensors which
+                     * receive the request
+                     */
+                    static byte const ALL = 0x01;
+                    /**
                      * Hall sensor
                      *
                      * @used by Gas meter reader
                      */
-                    static byte const HALL = 0x01;
+                    static byte const HALL = 0x02;
                 };
             }
         }
