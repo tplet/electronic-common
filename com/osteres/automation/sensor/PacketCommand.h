@@ -42,6 +42,10 @@ namespace com
                      * Send data (depend on main role of each sensor)
                      */
                     static byte const DATA = 0x03;
+                    /**
+                     * Init phase (depend on main role of each sensor)
+                     */
+                    static byte const INIT = 0x04;
                 };
             }
         }
