@@ -1,21 +1,16 @@
 //
-// Created by Thibault PLET on 11/04/2016.
+// Created by Thibault PLET on 04/05/2016.
 //
 
-#ifndef COM_OSTERES_AUTOMATION_SENSOR_TRANSMITTER_H
-#define COM_OSTERES_AUTOMATION_SENSOR_TRANSMITTER_H
+#ifndef COM_OSTERES_AUTOMATION_TRANSMISSION_TRANSMITTER_H
+#define COM_OSTERES_AUTOMATION_TRANSMISSION_TRANSMITTER_H
 
 
-namespace com
-{
-    namespace osteres
-    {
-        namespace automation
-        {
-            namespace sensor
-            {
-                class Transmitter
-                {
+namespace com {
+    namespace osteres {
+        namespace automation {
+            namespace transmission {
+                class Transmitter {
                 public:
                     /**
                      * Constructor
@@ -60,5 +55,4 @@ namespace com
     }
 }
 
-
-#endif //COM_OSTERES_AUTOMATION_SENSOR_TRANSMITTER_H
+#endif //COM_OSTERES_AUTOMATION_TRANSMISSION_TRANSMITTER_H

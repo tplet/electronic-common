@@ -18,7 +18,7 @@ namespace com
                 /**
                  * All sensors available
                  */
-                class Sensor
+                class Identity
                 {
                 public:
                     /**
