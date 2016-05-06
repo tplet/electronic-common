@@ -32,21 +32,25 @@ namespace com
                         static uint64_t const CHANNEL_MASTER = 0xFF0000000002;
 
                         /**
+                         * Universal OK response to indicate that request correctly received
+                         */
+                        static byte const OK = 0x01;
+                        /**
                          * Ask to get datetime
                          */
-                        static byte const DATETIME_REQUEST = 0x01;
+                        static byte const DATETIME_REQUEST = 0x02;
                         /**
                          * Response for datetime request
                          */
-                        static byte const DATETIME_RESPONSE = 0x02;
+                        static byte const DATETIME_RESPONSE = 0x03;
                         /**
                          * Send data (depend on main role of each sensor)
                          */
-                        static byte const DATA = 0x03;
+                        static byte const DATA = 0x04;
                         /**
                          * Init phase (depend on main role of each sensor)
                          */
-                        static byte const INIT = 0x04;
+                        static byte const INIT = 0x05;
                     };
                 }
             }

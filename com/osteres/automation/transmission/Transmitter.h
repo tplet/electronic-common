@@ -5,6 +5,9 @@
 #ifndef COM_OSTERES_AUTOMATION_TRANSMISSION_TRANSMITTER_H
 #define COM_OSTERES_AUTOMATION_TRANSMISSION_TRANSMITTER_H
 
+#include <com/osteres/automation/transmission/packet/Packet.h>
+
+using com::osteres::automation::transmission::packet::Packet;
 
 namespace com {
     namespace osteres {
@@ -31,6 +34,13 @@ namespace com {
                      * Restore to default ttl defined (in seconds)
                      */
                     void useDefaultTTL();
+
+                    /**
+                     * Send packet
+                     */
+                    void send(Packet &packet);
+
+                    void listen();
 
                     /**
                      * Get default ttl before timeout (in seconds)
