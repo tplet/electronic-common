@@ -5,6 +5,8 @@
 #ifndef COM_OSTERES_AUTOMATION_TRANSMISSION_PACKET_PACKET_H
 #define COM_OSTERES_AUTOMATION_TRANSMISSION_PACKET_PACKET_H
 
+#include <Arduino.h>
+
 typedef uint8_t byte;
 
 namespace com
