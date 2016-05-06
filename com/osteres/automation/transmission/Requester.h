@@ -5,6 +5,7 @@
 #ifndef COM_OSTERES_AUTOMATION_TRANSMISSION_REQUESTER_H
 #define COM_OSTERES_AUTOMATION_TRANSMISSION_REQUESTER_H
 
+#include <SPI.h>
 #include <RF24/RF24.h>
 #include <RTClib/RTClib.h>
 #include <com/osteres/automation/transmission/packet/Packet.h>

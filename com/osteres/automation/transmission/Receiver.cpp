@@ -23,7 +23,7 @@ Receiver::~Receiver() {
 }
 
 void Receiver::clean() {
-    free(*this->response);
+    //free(*this->response);
 }
 
 /**
@@ -51,8 +51,8 @@ bool Receiver::listen() {
             this->radio->read(&this->response, this->radio->getDynamicPayloadSize());
 
             // Check if packet are right destined to this (false positive)
-            if (this->response.getTarget() != this->sensor) {
-                this->response.resetData();
+            if ((*this->response).getTarget() != this->sensor) {
+                (*this->response).resetData();
                 noResponse = false;
             }
         }

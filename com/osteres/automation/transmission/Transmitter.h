@@ -5,9 +5,21 @@
 #ifndef COM_OSTERES_AUTOMATION_TRANSMISSION_TRANSMITTER_H
 #define COM_OSTERES_AUTOMATION_TRANSMISSION_TRANSMITTER_H
 
+#include <Arduino.h>
+#include "RF24/nRF24L01.h"
+#include <SPI.h>
+#include <RF24/RF24.h>
 #include <com/osteres/automation/transmission/packet/Packet.h>
+#include <com/osteres/automation/action/ActionManager.h>
+#include <com/osteres/automation/transmission/Requester.h>
+#include <com/osteres/automation/transmission/Receiver.h>
+
+typedef uint8_t byte;
 
 using com::osteres::automation::transmission::packet::Packet;
+using com::osteres::automation::action::ActionManager;
+using com::osteres::automation::transmission::Requester;
+using com::osteres::automation::transmission::Receiver;
 
 namespace com {
     namespace osteres {
@@ -18,7 +30,7 @@ namespace com {
                     /**
                      * Constructor
                      */
-                    Transmitter();
+                    Transmitter(RF24 &radio, byte sensor);
 
                     /**
                      * Get ttl before timeout (in seconds)
@@ -52,6 +64,21 @@ namespace com {
                      */
                     static void setDefaultTTL(unsigned int ttl);
 
+                    /**
+                     * Action manager setter
+                     */
+                    Transmitter setActionManager(ActionManager &actionManager);
+
+                    /**
+                     * Get requester object
+                     */
+                    Requester getRequester();
+
+                    /**
+                     * Get receiver object
+                     */
+                    Receiver getReceiver();
+
                 protected:
                     static unsigned int defaultTtl;
                     /**
@@ -59,6 +86,31 @@ namespace com {
                      * Ttl = time to live
                      */
                     unsigned int ttl;
+
+                    /**
+                     * Action manager to forward response received
+                     */
+                    ActionManager * actionManager;
+
+                    /**
+                     * Requester object
+                     */
+                    Requester * requester;
+
+                    /**
+                     * Received object
+                     */
+                    Receiver * receiver;
+
+                    /**
+                     * Radio for transmission
+                     */
+                    RF24 * radio;
+
+                    /**
+                     * Sensor identifier
+                     */
+                    byte sensor;
                 };
             }
         }

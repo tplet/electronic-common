@@ -16,4 +16,5 @@ generate_arduino_library(${NAME}
         SRCS ${FILES_CPP}
         HDRS ${FILES_H}
         BOARD ${BOARD}
+        ARDLIBS ${ARDSLIBS}
 )

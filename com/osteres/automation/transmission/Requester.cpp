@@ -56,6 +56,7 @@ bool Requester::send(Packet &packet, Receiver &receiver) {
     // Prepare uniq id
     packet.setId(IDGenerator::getNextId());
     // Datetime if possible
+    // @TODO: Remove RTC, not responsability of requester to to that
     if (this->useRTC()) {
         packet.setDate(this->rtc->now().unixtime());
     }

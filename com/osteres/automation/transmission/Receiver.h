@@ -6,6 +6,7 @@
 #define COM_OSTERES_AUTOMATION_TRANSMISSION_RECEIVER_H
 
 #include <Arduino.h>
+#include <SPI.h>
 #include <RF24/RF24.h>
 #include <com/osteres/automation/transmission/packet/Packet.h>
 
@@ -35,7 +36,7 @@ namespace com
                     /**
                      * Listen response for certain time
                      */
-                    bool listen(unsigned int timeout);
+                    bool listen();
 
                     /**
                      * Get packet received
@@ -60,7 +61,7 @@ namespace com
                     /**
                      * Response packet
                      */
-                    Packet response;
+                    Packet * response;
 
                     /**
                      * Sensor target which can receive packet

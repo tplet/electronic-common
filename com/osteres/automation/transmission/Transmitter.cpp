@@ -14,9 +14,11 @@ unsigned int Transmitter::defaultTtl = 1000;
 /**
  * Constructor
  */
-Transmitter::Transmitter()
+Transmitter::Transmitter(RF24 &radio, byte sensor)
 {
     this->useDefaultTTL();
+    this->radio = &radio;
+    this->sensor = sensor;
 }
 
 /**
@@ -57,4 +59,37 @@ unsigned int Transmitter::getDefaultTTL()
 void Transmitter::setDefaultTTL(unsigned int ttl)
 {
     defaultTtl = ttl;
+}
+
+/**
+ * Action manager setter
+ */
+Transmitter Transmitter::setActionManager(ActionManager &actionManager) {
+    this->actionManager = &actionManager;
+
+    return *this;
+}
+
+/**
+ * Get requester
+ * Initialize it if necessary
+ */
+Requester Transmitter::getRequester() {
+    if (this->requester == 0) {
+        this->requester = new Requester(*this->radio);
+    }
+
+    return *this->requester;
+}
+
+/**
+ * Get receiver
+ * Initialize if if necessary
+ */
+Receiver Transmitter::getReceiver() {
+    if (this->receiver == 0) {
+        this->receiver = new Receiver(*this->radio, this->sensor, this->getTTL());
+    }
+
+    return *this->receiver;
 }
