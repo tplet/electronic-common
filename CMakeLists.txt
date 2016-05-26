@@ -11,6 +11,9 @@ file(GLOB_RECURSE FILES_H "*.h")
 # Ignores some paths
 include(CMakeLists-ignore.txt)
 
+# Add executable
+#add_library(${NAME} ${FILES_CPP} ${FILES_H})
+
 # Generate
 generate_arduino_library(${NAME}
         SRCS ${FILES_CPP}
