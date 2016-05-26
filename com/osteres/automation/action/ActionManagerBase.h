@@ -2,8 +2,8 @@
 // Created by Thibault PLET on 06/05/2016.
 //
 
-#ifndef COM_OSTERES_AUTOMATION_ACTION_ACTIONMANAGER_H
-#define COM_OSTERES_AUTOMATION_ACTION_ACTIONMANAGER_H
+#ifndef COM_OSTERES_AUTOMATION_ACTION_ACTIONMANAGERBASE_H
+#define COM_OSTERES_AUTOMATION_ACTION_ACTIONMANAGERBASE_H
 
 #include <com/osteres/automation/transmission/packet/Packet.h>
 
@@ -17,7 +17,7 @@ namespace com
         {
             namespace action
             {
-                class ActionManager
+                class ActionManagerBase
                 {
                 public:
                     /**
@@ -31,4 +31,4 @@ namespace com
     }
 }
 
-#endif //COM_OSTERES_AUTOMATION_ACTION_ACTIONMANAGER_H
+#endif //COM_OSTERES_AUTOMATION_ACTION_ACTIONMANAGERBASE_H

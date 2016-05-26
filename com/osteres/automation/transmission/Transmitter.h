@@ -10,14 +10,14 @@
 #include <SPI.h>
 #include <RF24/RF24.h>
 #include <com/osteres/automation/transmission/packet/Packet.h>
-#include <com/osteres/automation/action/ActionManager.h>
+#include <com/osteres/automation/action/ActionManagerBase.h>
 #include <com/osteres/automation/transmission/Requester.h>
 #include <com/osteres/automation/transmission/Receiver.h>
 
 typedef uint8_t byte;
 
 using com::osteres::automation::transmission::packet::Packet;
-using com::osteres::automation::action::ActionManager;
+using com::osteres::automation::action::ActionManagerBase;
 using com::osteres::automation::transmission::Requester;
 using com::osteres::automation::transmission::Receiver;
 
@@ -67,7 +67,7 @@ namespace com {
                     /**
                      * Action manager setter
                      */
-                    Transmitter setActionManager(ActionManager &actionManager);
+                    Transmitter setActionManager(ActionManagerBase &actionManager);
 
                     /**
                      * Get requester object
@@ -90,7 +90,7 @@ namespace com {
                     /**
                      * Action manager to forward response received
                      */
-                    ActionManager * actionManager;
+                    ActionManagerBase * actionManager;
 
                     /**
                      * Requester object

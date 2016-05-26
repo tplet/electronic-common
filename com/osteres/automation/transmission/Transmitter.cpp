@@ -64,7 +64,7 @@ void Transmitter::setDefaultTTL(unsigned int ttl)
 /**
  * Action manager setter
  */
-Transmitter Transmitter::setActionManager(ActionManager &actionManager) {
+Transmitter Transmitter::setActionManager(ActionManagerBase &actionManager) {
     this->actionManager = &actionManager;
 
     return *this;
