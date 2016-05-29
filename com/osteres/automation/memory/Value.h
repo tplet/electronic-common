@@ -16,7 +16,7 @@ namespace com {
         namespace automation {
             namespace memory {
                 template <typename T>
-                class Value : ValueBase {
+                class Value : public ValueBase {
                 protected:
                     /**
                      * Value stored
@@ -29,6 +29,13 @@ namespace com {
                      * @param int address Address to stored data in EEProm. Be sure that this address not already used!
                      */
                     Value(int address) : ValueBase(address) {};
+
+                    /**
+                     * Get address
+                     */
+                    int getAddress() {
+                        return ValueBase::getAddress();
+                    };
 
                     /**
                      * Constructor

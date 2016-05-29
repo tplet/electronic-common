@@ -5,7 +5,7 @@
 #ifndef COM_OSTERES_AUTOMATION_SAMPLE_SAMPLEAPPLICATION_H
 #define COM_OSTERES_AUTOMATION_SAMPLE_SAMPLEAPPLICATION_H
 
-#define ADDR_COUNTER 0x12
+#define ADDR_COUNTER 0x0C
 
 #include <Arduino.h>
 #include <com/osteres/automation/Application.h>
@@ -34,8 +34,7 @@ namespace com
                         this->pinLight = pinLight;
 
                         // Init counter
-                        Value<unsigned int> c(ADDR_COUNTER, 0);
-                        this->counter = &c;
+                        this->counter = new Value<unsigned int>(ADDR_COUNTER, 0);
                     }
 
                     /**
@@ -58,6 +57,16 @@ namespace com
                         // Increment counter
                         this->counter->set(this->counter->get() + 1);
 
+                        this->refreshScreen();
+
+                        // Wait 1s
+                        delay(1000);
+                    }
+
+                    /**
+                     * Refresh screen
+                     */
+                    void refreshScreen() {
                         // Clear screen
                         this->screen->clear();
 
@@ -65,9 +74,6 @@ namespace com
                         this->screen->setCursor(0, 0);
                         String output = "Counter:" + String(this->counter->get());
                         this->screen->write(output.c_str());
-
-                        // Wait 1s
-                        delay(1000);
                     }
 
                 protected:
