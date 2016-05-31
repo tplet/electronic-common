@@ -39,9 +39,14 @@ namespace com
                     void clean();
 
                     /**
-                     * Send packet
+                     * Send packet and check if it has been successfully received
                      */
                     bool send(Packet &packet, Receiver &receiver);
+
+                    /**
+                     * Send packet without checking success receiving
+                     */
+                    bool send(Packet &packet);
 
                     /**
                      * Set RTC object
@@ -59,6 +64,16 @@ namespace com
                     bool isSuccess();
 
                 protected:
+                    /**
+                     * Prepare packet and send it only (no response attempted)
+                     */
+                    void doSend(Packet &packet);
+
+                    /**
+                     * Waiting for success response
+                     */
+                    bool doListenSuccessSent(Packet &packet, Receiver &receiver);
+
                     /**
                      * Radio transmitter
                      */

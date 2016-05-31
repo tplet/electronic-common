@@ -47,12 +47,33 @@ bool Requester::useRTC() {
 }
 
 /**
- * Send packet by using RTC
+ * Send packet and check if it has been successfully received (send by using RF24)
  */
 bool Requester::send(Packet &packet, Receiver &receiver) {
-    // Init
-    this->success = false;
+    // Send
+    this->doSend(packet);
 
+    // Waiting for response
+    this->success = this->doListenSuccessSent(packet, receiver);
+
+    // Return success state
+    return this->success;
+}
+
+/**
+ * Send packet without checking success receiving
+ */
+bool Requester::send(Packet &packet) {
+    // Send
+    this->doSend(packet);
+
+    return true;
+}
+
+/**
+ * Prepare packet and send it only (no response attempted)
+ */
+void Requester::doSend(Packet &packet) {
     // Prepare uniq id
     packet.setId(IDGenerator::getNextId());
     // Datetime if possible
@@ -63,18 +84,23 @@ bool Requester::send(Packet &packet, Receiver &receiver) {
 
     // Send
     this->radio->write(&packet, sizeof(packet));
+}
 
-    // Waiting for response
+/**
+ * Waiting for success response
+ */
+bool Requester::doListenSuccessSent(Packet &packet, Receiver &receiver) {
+    bool success = false;
+
     if (receiver.listen()) {
         // Checking response (command: OK, exclusively for packet id send)
         if (receiver.getResponse()->getCommand() == Command::OK &&
             receiver.getResponse()->getDataByte1() == packet.getId()) {
-            this->success = true;
+            success = true;
         }
     }
 
-    // Return success state
-    return this->success;
+    return success;
 }
 
 /**
