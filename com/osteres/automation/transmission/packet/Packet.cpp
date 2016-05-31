@@ -121,6 +121,22 @@ void Packet::setDate(unsigned long int date)
     this->date = date;
 }
 
+/**
+ * Flag to indicate that packet is the last.
+ * It's mean that there is no packet to receive after this one (source queue empty)
+ */
+bool Packet::isLast() {
+    return this->last;
+}
+
+/**
+ * Set flag to indicate that packet is the last.
+ * It's mean that there is no packet to receive after this one (source queue empty)
+ */
+void Packet::setLast(bool last) {
+    this->last = last;
+}
+
 byte Packet::getDataByte1()
 { return this->dataByte1; }
 
@@ -178,9 +194,6 @@ char Packet::getDataChar2()
 char Packet::getDataChar3()
 { return this->dataChart3; }
 
-char Packet::getDataChar4()
-{ return this->dataChart4; }
-
 void Packet::setDataChar1(char data)
 { this->dataChart1 = data; }
 
@@ -189,9 +202,6 @@ void Packet::setDataChar2(char data)
 
 void Packet::setDataChar3(char data)
 { this->dataChart3 = data; }
-
-void Packet::setDataChar4(char data)
-{ this->dataChart4 = data; }
 
 /**
  * Set request identifier by using next uniq identifier
@@ -222,5 +232,4 @@ void Packet::resetData()
     this->setDataChar1(0);
     this->setDataChar2(0);
     this->setDataChar3(0);
-    this->setDataChar4(0);
 }

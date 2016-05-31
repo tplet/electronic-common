@@ -92,6 +92,18 @@ namespace com
                         void setDate(unsigned long int date);
 
                         /**
+                         * Flag to indicate that packet is the last.
+                         * It's mean that there is no packet to receive after this one (source queue empty)
+                         */
+                        bool isLast();
+
+                        /**
+                         * Set flag to indicate that packet is the last.
+                         * It's mean that there is no packet to receive after this one (source queue empty)
+                         */
+                        void setLast(bool last);
+
+                        /**
                          * Reset all data contained in request
                          */
                         void resetData();
@@ -134,44 +146,63 @@ namespace com
 
                         char getDataChar3();
 
-                        char getDataChar4();
-
                         void setDataChar1(char data);
 
                         void setDataChar2(char data);
 
                         void setDataChar3(char data);
 
-                        void setDataChar4(char data);
-
                     protected:
                         /**
                          * Packet identifier (uniq for each running sensor)
+                         *
+                         * 1 byte
                          */
                         byte id;
 
                         /**
                          * Sensor identifier (uniq for all automation park)
+                         *
+                         * 1 byte
                          */
                         byte sensor;
 
                         /**
                          * Command identifier
+                         *
+                         * 1 byte
                          */
                         byte command;
 
                         /**
                          * Target of request
+                         *
+                         * 1 byte
                          */
                         byte target;
 
                         /**
+                         * Flag to indicate that packet is the last.
+                         * It's mean that there is no packet to receive after this one (source queue empty)
+                         *
+                         * 1 byte
+                         */
+                        bool last;
+
+                        /**
+                         * Timestamp associated to data
+                         *
+                         * 4 byte
+                         */
+                        unsigned long int date;
+
+                        /**
                          * Containers
                          * Be careful to not exceed 32 bytes on total properties size!
-                         * Actually: 32 bytes (24 bytes for data)
+                         * Actually: 32 bytes (23 bytes for data)
                          *
                          * Check var type size between arduino and raspberry before declare it
-                         * Raspbbery unknow: When 30 bytes declared, sizeof(request) equal to 32... Work with step ?
+                         * Raspbberry unknow: When 30 bytes declared, sizeof(request) equal to 32... Work with step ?
                          *                   (4, 8, 16, 32 ?)
                          *                   To fix, ensure that exactly one of these step defined
                          */
@@ -196,17 +227,11 @@ namespace com
 
                         /**
                          * Data chart containers
-                         * 4 x 1 byte = 4 bytes
+                         * 3 x 1 byte = 3 bytes
                          */
                         char dataChart1;
                         char dataChart2;
                         char dataChart3;
-                        char dataChart4;
-
-                        /**
-                         * Timestamp associated to data
-                         */
-                        unsigned long int date;
 
                     };
                 }
