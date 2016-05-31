@@ -33,10 +33,10 @@ void Requester::clean() {
 /**
  * RTC object setter
  */
-Requester Requester::setRTC(RTC_DS1307 &rtc) {
+Requester * Requester::setRTC(RTC_DS1307 &rtc) {
     this->rtc = &rtc;
 
-    return *this;
+    return this;
 }
 
 /**
@@ -67,8 +67,8 @@ bool Requester::send(Packet &packet, Receiver &receiver) {
     // Waiting for response
     if (receiver.listen()) {
         // Checking response (command: OK, exclusively for packet id send)
-        if (receiver.getResponse().getCommand() == Command::OK &&
-            receiver.getResponse().getDataByte1() == packet.getId()) {
+        if (receiver.getResponse()->getCommand() == Command::OK &&
+            receiver.getResponse()->getDataByte1() == packet.getId()) {
             this->success = true;
         }
     }

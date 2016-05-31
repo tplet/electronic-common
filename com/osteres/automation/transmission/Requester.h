@@ -46,7 +46,7 @@ namespace com
                     /**
                      * Set RTC object
                      */
-                    Requester setRTC(RTC_DS1307 &rtc);
+                    Requester * setRTC(RTC_DS1307 &rtc);
 
                     /**
                      * Flag to indicate if can use rtc

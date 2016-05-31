@@ -64,32 +64,32 @@ void Transmitter::setDefaultTTL(unsigned int ttl)
 /**
  * Action manager setter
  */
-Transmitter Transmitter::setActionManager(ActionManagerBase &actionManager) {
+Transmitter * Transmitter::setActionManager(ActionManagerBase &actionManager) {
     this->actionManager = &actionManager;
 
-    return *this;
+    return this;
 }
 
 /**
  * Get requester
  * Initialize it if necessary
  */
-Requester Transmitter::getRequester() {
+Requester * Transmitter::getRequester() {
     if (this->requester == 0) {
         this->requester = new Requester(*this->radio);
     }
 
-    return *this->requester;
+    return this->requester;
 }
 
 /**
  * Get receiver
  * Initialize if if necessary
  */
-Receiver Transmitter::getReceiver() {
+Receiver * Transmitter::getReceiver() {
     if (this->receiver == 0) {
         this->receiver = new Receiver(*this->radio, this->sensor, this->getTTL());
     }
 
-    return *this->receiver;
+    return this->receiver;
 }

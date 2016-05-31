@@ -41,7 +41,7 @@ namespace com
                     /**
                      * Get packet received
                      */
-                    Packet getResponse();
+                    Packet * getResponse();
 
                     /**
                      * Flag to indicate if response has been received

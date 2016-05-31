@@ -75,6 +75,6 @@ bool Receiver::hasResponse() {
 /**
  * Get response received
  */
-Packet Receiver::getResponse() {
-    return *this->response;
+Packet * Receiver::getResponse() {
+    return this->response;
 }

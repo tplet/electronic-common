@@ -67,17 +67,17 @@ namespace com {
                     /**
                      * Action manager setter
                      */
-                    Transmitter setActionManager(ActionManagerBase &actionManager);
+                    Transmitter * setActionManager(ActionManagerBase &actionManager);
 
                     /**
                      * Get requester object
                      */
-                    Requester getRequester();
+                    Requester * getRequester();
 
                     /**
                      * Get receiver object
                      */
-                    Receiver getReceiver();
+                    Receiver * getReceiver();
 
                 protected:
                     static unsigned int defaultTtl;
