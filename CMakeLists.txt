@@ -1,5 +1,5 @@
 # Library name
-set(NAME vendors)
+set(NAME common)
 
 # Config
 set(${NAME}_RECURSE True)
