@@ -21,24 +21,38 @@ Packet::Packet()
     this->date = 0;
     this->target = 0;
     this->command = 0;
-}
-
-Packet::Packet(byte s, byte i)
-{
-    this->resetData();
-    this->sensor = s;
-    this->id = i;
+    this->last = false;
     this->date = 0;
-    this->target = 0;
-    this->command = 0;
 }
 
 /**
- * Destructor
+ * Constructor with sensor
  */
-Packet::~Packet()
+Packet::Packet(byte sensor)
 {
-    // Nothing to do
+    this->resetData();
+    this->sensor = sensor;
+    this->id = 0;
+    this->date = 0;
+    this->target = 0;
+    this->command = 0;
+    this->last = false;
+    this->date = 0;
+}
+
+/**
+ * Constructor with sensor and packet id
+ */
+Packet::Packet(byte sensor, byte id)
+{
+    this->resetData();
+    this->sensor = sensor;
+    this->id = id;
+    this->date = 0;
+    this->target = 0;
+    this->command = 0;
+    this->last = false;
+    this->date = 0;
 }
 
 /**

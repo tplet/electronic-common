@@ -50,13 +50,29 @@ namespace com {
                     void useDefaultTTL();
 
                     /**
+                     * Setup transmitter
+                     * Initialize radio associated
+                     */
+                    void setup()
+                    {
+                        this->radio->begin();
+                        this->radio->setAutoAck(true);
+                        this->radio->setRetries(15, 15);
+                        this->radio->enableDynamicPayloads();
+                        this->radio->openWritingPipe(Command::CHANNEL_SLAVE); // Slave channel
+                        this->radio->openReadingPipe(1, Command::CHANNEL_MASTER); // Master channel
+
+                        Serial.println("Transmitter: Setup done.");
+                    }
+
+                    /**
                      * Send packet
                      *
                      * Return success state (true if packet successfully transmitted and received, false otherwise)
                      */
                     bool send(Packet &packet)
                     {
-                        // Send with requester and use receiver to check if successfull transmited
+                        // Send with requester and use receiver to check if successful transmitted
                         return this->getRequester()->send(packet, *this->getReceiver());
                     }
 
@@ -65,23 +81,27 @@ namespace com {
                      */
                     void listen()
                     {
+                        Serial.println("Transmitter: Listen packet...");
+
                         // Confirm packet
-                        Packet packet;
-                        packet.setSensor(this->sensor);
-                        packet.setCommand(Command::OK);
+                        Packet * packet = new Packet(this->sensor);
+                        packet->setCommand(Command::OK);
 
                         Packet * response;
+                        int i = 0;
 
                         bool last = false;
                         // Waiting for response
                         while (this->getReceiver()->listen() && !last) {
 
+                            i++;
                             response = this->getReceiver()->getResponse();
 
                             // Send success receiving response
-                            packet.setTarget(response->getSensor());
-                            packet.setDataByte1(response->getId());
-                            this->getRequester()->send(packet);
+                            packet->setTarget(response->getSensor());
+                            packet->setDataByte1(response->getId());
+                            packet->setDate(0);
+                            this->getRequester()->send(*packet);
 
                             // Processing
                             if (this->hasActionManager()) {
@@ -92,8 +112,11 @@ namespace com {
                             last = response->isLast();
                         }
 
+                        Serial.println("Transmitter: Stop listening. " + String(i) + " packet received and processed.");
+
                         // Free memory
-                        free(&packet);
+                        delete packet;
+                        delete response;
                     }
 
                     /**

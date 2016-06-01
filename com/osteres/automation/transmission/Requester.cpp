@@ -3,6 +3,7 @@
 //
 
 #include "Requester.h"
+#include <Arduino.h>
 #include <com/osteres/util/IDGenerator.h>
 #include <com/osteres/automation/transmission/packet/Command.h>
 
@@ -50,6 +51,9 @@ bool Requester::useRTC() {
  * Send packet and check if it has been successfully received (send by using RF24)
  */
 bool Requester::send(Packet &packet, Receiver &receiver) {
+
+    Serial.println("Requester: Send packet and wait confirmation.");
+
     // Send
     this->doSend(packet);
 
@@ -64,6 +68,8 @@ bool Requester::send(Packet &packet, Receiver &receiver) {
  * Send packet without checking success receiving
  */
 bool Requester::send(Packet &packet) {
+    Serial.println("Requester: Send packet without waiting for confirmation.");
+
     // Send
     this->doSend(packet);
 
@@ -74,11 +80,10 @@ bool Requester::send(Packet &packet) {
  * Prepare packet and send it only (no response attempted)
  */
 void Requester::doSend(Packet &packet) {
-    // Prepare uniq id
+    // Prepare unique id
     packet.setId(IDGenerator::getNextId());
-    // Datetime if possible
-    // @TODO: Remove RTC, not responsability of requester to to that
-    if (this->useRTC()) {
+    // Datetime if possible and not already defined
+    if (this->useRTC() && packet.getDate() == 0) {
         packet.setDate(this->rtc->now().unixtime());
     }
 
@@ -94,10 +99,17 @@ bool Requester::doListenSuccessSent(Packet &packet, Receiver &receiver) {
 
     if (receiver.listen()) {
         // Checking response (command: OK, exclusively for packet id send)
+        // Note that if response received but it's not a OK command: abort!
         if (receiver.getResponse()->getCommand() == Command::OK &&
             receiver.getResponse()->getDataByte1() == packet.getId()) {
             success = true;
         }
+    }
+    // Timeout or no OK command received
+    if (!success) {
+        Serial.println("Requester: No confirmation received...");
+    } else {
+        Serial.println("Requester: Confirmation received!");
     }
 
     return success;

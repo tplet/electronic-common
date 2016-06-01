@@ -27,14 +27,14 @@ namespace com
                         Packet();
 
                         /**
+                         * Constructor with sensor
+                         */
+                        Packet(byte sensor);
+
+                        /**
                          * Constructor with sensor and id
                          */
                         Packet(byte sensor, byte id);
-
-                        /**
-                         * Destructor
-                         */
-                        ~Packet();
 
                         /**
                          * Get request identifier

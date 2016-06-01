@@ -3,8 +3,11 @@
 //
 
 #include "Receiver.h"
+#include <com/osteres/automation/transmission/packet/Packet.h>
 
 using namespace com::osteres::automation::transmission;
+
+using com::osteres::automation::transmission::packet::Packet;
 
 /**
  * Constructor
@@ -22,8 +25,13 @@ Receiver::~Receiver() {
     this->clean();
 }
 
+/**
+ * Clean class
+ */
 void Receiver::clean() {
-    //free(*this->response);
+    if (this->hasResponse()) {
+        delete this->response;
+    }
 }
 
 /**
