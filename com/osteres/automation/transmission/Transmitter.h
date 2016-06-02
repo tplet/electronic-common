@@ -35,6 +35,11 @@ namespace com {
                     Transmitter(RF24 &radio, byte sensor);
 
                     /**
+                     * Constructor
+                     */
+                    Transmitter(RF24 &radio, byte sensor, bool isMaster);
+
+                    /**
                      * Get ttl before timeout (in seconds)
                      */
                     unsigned int getTTL();
@@ -55,12 +60,19 @@ namespace com {
                      */
                     void setup()
                     {
+                        uint64_t writingChannel = Command::CHANNEL_SLAVE;
+                        uint64_t readingChannel = Command::CHANNEL_MASTER;
+                        if (this->isMaster()) {
+                            writingChannel = Command::CHANNEL_MASTER;
+                            readingChannel = Command::CHANNEL_SLAVE;
+                        }
+
                         this->radio->begin();
                         this->radio->setAutoAck(true);
                         this->radio->setRetries(15, 15);
                         this->radio->enableDynamicPayloads();
-                        this->radio->openWritingPipe(Command::CHANNEL_SLAVE); // Slave channel
-                        this->radio->openReadingPipe(1, Command::CHANNEL_MASTER); // Master channel
+                        this->radio->openWritingPipe(writingChannel);
+                        this->radio->openReadingPipe(1, readingChannel);
 
                         Serial.println("Transmitter: Setup done.");
                     }
@@ -160,7 +172,20 @@ namespace com {
                         return this->radio;
                     }
 
+                    /**
+                     * Master flag
+                     */
+                    bool isMaster()
+                    {
+                        return this->master;
+                    }
+
                 protected:
+                    /**
+                     * Constructor
+                     */
+                    void construct(RF24 &radio, byte sensor, bool isMaster);
+
                     static unsigned int defaultTtl;
                     /**
                      * Ttl before timeout (in seconds)
@@ -192,6 +217,12 @@ namespace com {
                      * Sensor identifier
                      */
                     byte sensor;
+
+                    /**
+                     * Master flag
+                     * If false, slave mode
+                     */
+                    bool master;
                 };
             }
         }

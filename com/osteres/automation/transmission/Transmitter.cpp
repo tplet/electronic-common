@@ -14,11 +14,28 @@ unsigned int Transmitter::defaultTtl = 1000;
 /**
  * Constructor
  */
+Transmitter::Transmitter(RF24 &radio, byte sensor, bool isMaster)
+{
+    Transmitter::construct(radio, sensor, isMaster);
+}
+
+/**
+ * Constructor
+ */
 Transmitter::Transmitter(RF24 &radio, byte sensor)
+{
+    Transmitter::construct(radio, sensor, false);
+}
+
+/**
+ * Constructor
+ */
+void Transmitter::construct(RF24 &radio, byte sensor, bool isMaster)
 {
     this->useDefaultTTL();
     this->radio = &radio;
     this->sensor = sensor;
+    this->master = master;
 }
 
 /**
