@@ -29,12 +29,21 @@ namespace com
                     /**
                      * Constructor
                      */
-                    SampleApplication(LiquidCrystal &screen, unsigned int pinLight) {
-                        this->screen = &screen;
+                    SampleApplication(LiquidCrystal * screen, unsigned int pinLight) {
+                        this->screen = screen;
                         this->pinLight = pinLight;
 
                         // Init counter
                         this->counter = new Value<unsigned int>(ADDR_COUNTER, 0);
+                    }
+
+                    /**
+                     * Destructor
+                     */
+                    ~SampleApplication()
+                    {
+                        // Remove counter
+                        delete this->counter;
                     }
 
                     /**

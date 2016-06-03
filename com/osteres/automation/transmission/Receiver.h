@@ -26,7 +26,7 @@ namespace com
                     /**
                      * Constructor
                      */
-                    Receiver(RF24 &radio, byte sensor, unsigned int timeout);
+                    Receiver(RF24 * radio, byte sensor, unsigned int timeout);
 
                     /**
                      * Destructor
@@ -49,9 +49,14 @@ namespace com
                     bool hasResponse();
 
                     /**
-                     * Clean memory
+                     * Clean response in memory
                      */
-                    void clean();
+                    void cleanResponse();
+
+                    /**
+                     * Set timeout
+                     */
+                    void setTimeout(unsigned int timeout);
                 protected:
                     /**
                      * Radio used for transmission

@@ -26,7 +26,7 @@ namespace com
                     /**
                      * Constructor
                      */
-                    Requester(RF24 &radio);
+                    Requester(RF24 * radio);
 
                     /**
                      * Destructor
@@ -41,17 +41,17 @@ namespace com
                     /**
                      * Send packet and check if it has been successfully received
                      */
-                    bool send(Packet &packet, Receiver &receiver);
+                    bool send(Packet * packet, Receiver * receiver);
 
                     /**
                      * Send packet without checking success receiving
                      */
-                    bool send(Packet &packet);
+                    bool send(Packet * packet);
 
                     /**
                      * Set RTC object
                      */
-                    Requester * setRTC(RTC_DS1307 &rtc);
+                    Requester * setRTC(RTC_DS1307 * rtc);
 
                     /**
                      * Flag to indicate if can use rtc
@@ -67,12 +67,12 @@ namespace com
                     /**
                      * Prepare packet and send it only (no response attempted)
                      */
-                    void doSend(Packet &packet);
+                    void doSend(Packet * packet);
 
                     /**
                      * Waiting for success response
                      */
-                    bool doListenSuccessSent(Packet &packet, Receiver &receiver);
+                    bool doListenSuccessSent(Packet * packet, Receiver * receiver);
 
                     /**
                      * Radio transmitter

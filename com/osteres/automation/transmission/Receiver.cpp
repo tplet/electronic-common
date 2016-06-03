@@ -12,8 +12,8 @@ using com::osteres::automation::transmission::packet::Packet;
 /**
  * Constructor
  */
-Receiver::Receiver(RF24 &radio, byte sensor, unsigned int timeout) {
-    this->radio = &radio;
+Receiver::Receiver(RF24 * radio, byte sensor, unsigned int timeout) {
+    this->radio = radio;
     this->sensor = sensor;
     this->timeout = timeout;
 }
@@ -22,16 +22,14 @@ Receiver::Receiver(RF24 &radio, byte sensor, unsigned int timeout) {
  * Destructor
  */
 Receiver::~Receiver() {
-    this->clean();
+    this->cleanResponse();
 }
 
 /**
  * Clean class
  */
-void Receiver::clean() {
-    if (this->hasResponse()) {
-        delete this->response;
-    }
+void Receiver::cleanResponse() {
+    delete this->response;
 }
 
 /**
@@ -56,14 +54,24 @@ bool Receiver::listen() {
 
         // Read response if available
         if (!noResponse) {
-            this->radio->read(&this->response, this->radio->getDynamicPayloadSize());
+            // Clean previous response and prepare another
+            this->cleanResponse();
+            this->response = new Packet();
+
+            // Read response
+            this->radio->read(this->response, this->radio->getDynamicPayloadSize());
 
             // Check if packet are right destined to this (false positive)
-            if ((*this->response).getTarget() != this->sensor) {
-                (*this->response).resetData();
+            if (this->response->getTarget() != this->sensor) {
+                this->response->resetData();
                 noResponse = false;
             }
         }
+    }
+
+    // Security: Remove response if no response...
+    if (noResponse) {
+        this->cleanResponse();
     }
 
     // Stop listening
@@ -85,4 +93,12 @@ bool Receiver::hasResponse() {
  */
 Packet * Receiver::getResponse() {
     return this->response;
+}
+
+/**
+ * Set timeout
+ */
+void Receiver::setTimeout(unsigned int timeout)
+{
+    this->timeout = timeout;
 }

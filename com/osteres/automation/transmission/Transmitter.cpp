@@ -14,7 +14,7 @@ unsigned int Transmitter::defaultTtl = 1000;
 /**
  * Constructor
  */
-Transmitter::Transmitter(RF24 &radio, byte sensor, bool isMaster)
+Transmitter::Transmitter(RF24 * radio, byte sensor, bool isMaster)
 {
     Transmitter::construct(radio, sensor, isMaster);
 }
@@ -22,44 +22,33 @@ Transmitter::Transmitter(RF24 &radio, byte sensor, bool isMaster)
 /**
  * Constructor
  */
-Transmitter::Transmitter(RF24 &radio, byte sensor)
+Transmitter::Transmitter(RF24 * radio, byte sensor)
 {
     Transmitter::construct(radio, sensor, false);
 }
 
 /**
+ * Destructor
+ */
+Transmitter::~Transmitter()
+{
+    // Remove requester and receiver
+    delete this->requester;
+    delete this->receiver;
+}
+
+/**
  * Constructor
  */
-void Transmitter::construct(RF24 &radio, byte sensor, bool isMaster)
+void Transmitter::construct(RF24 * radio, byte sensor, bool isMaster)
 {
-    this->useDefaultTTL();
-    this->radio = &radio;
+    this->radio = radio;
     this->sensor = sensor;
     this->master = master;
-}
 
-/**
- * Get ttl before timeout (in seconds)
- */
-unsigned int Transmitter::getTTL()
-{
-    return this->ttl;
-}
-
-/**
- * Set ttl before timeout (in seconds)
- */
-void Transmitter::setTTL(unsigned int ttl)
-{
-    this->ttl = ttl;
-}
-
-/**
- * Restore to default ttl defined (in seconds)
- */
-void Transmitter::useDefaultTTL()
-{
-    this->setTTL(getDefaultTTL());
+    // Prepare requester and receiver
+    this->requester = new Requester(this->radio);
+    this->receiver = new Receiver(this->radio, this->sensor, getDefaultTTL());
 }
 
 /**
@@ -81,8 +70,8 @@ void Transmitter::setDefaultTTL(unsigned int ttl)
 /**
  * Action manager setter
  */
-Transmitter * Transmitter::setActionManager(ActionManagerBase &actionManager) {
-    this->actionManager = &actionManager;
+Transmitter * Transmitter::setActionManager(ActionManagerBase * actionManager) {
+    this->actionManager = actionManager;
 
     return this;
 }
@@ -92,10 +81,6 @@ Transmitter * Transmitter::setActionManager(ActionManagerBase &actionManager) {
  * Initialize it if necessary
  */
 Requester * Transmitter::getRequester() {
-    if (this->requester == 0) {
-        this->requester = new Requester(*this->radio);
-    }
-
     return this->requester;
 }
 
@@ -104,9 +89,5 @@ Requester * Transmitter::getRequester() {
  * Initialize if if necessary
  */
 Receiver * Transmitter::getReceiver() {
-    if (this->receiver == 0) {
-        this->receiver = new Receiver(*this->radio, this->sensor, this->getTTL());
-    }
-
     return this->receiver;
 }

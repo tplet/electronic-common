@@ -32,27 +32,17 @@ namespace com {
                     /**
                      * Constructor
                      */
-                    Transmitter(RF24 &radio, byte sensor);
+                    Transmitter(RF24 * radio, byte sensor);
 
                     /**
                      * Constructor
                      */
-                    Transmitter(RF24 &radio, byte sensor, bool isMaster);
+                    Transmitter(RF24 * radio, byte sensor, bool isMaster);
 
                     /**
-                     * Get ttl before timeout (in seconds)
+                     * Destructor
                      */
-                    unsigned int getTTL();
-
-                    /**
-                     * Set ttl before timeout (in seconds)
-                     */
-                    void setTTL(unsigned int ttl);
-
-                    /**
-                     * Restore to default ttl defined (in seconds)
-                     */
-                    void useDefaultTTL();
+                    ~Transmitter();
 
                     /**
                      * Setup transmitter
@@ -67,6 +57,7 @@ namespace com {
                             readingChannel = Command::CHANNEL_SLAVE;
                         }
 
+                        // Init and configure radio transmitter
                         this->radio->begin();
                         this->radio->setAutoAck(true);
                         this->radio->setRetries(15, 15);
@@ -74,7 +65,7 @@ namespace com {
                         this->radio->openWritingPipe(writingChannel);
                         this->radio->openReadingPipe(1, readingChannel);
 
-                        Serial.println("Transmitter: Setup done.");
+                        Serial.println(F("Transmitter: Setup done."));
                     }
 
                     /**
@@ -82,10 +73,10 @@ namespace com {
                      *
                      * Return success state (true if packet successfully transmitted and received, false otherwise)
                      */
-                    bool send(Packet &packet)
+                    bool send(Packet * packet)
                     {
                         // Send with requester and use receiver to check if successful transmitted
-                        return this->getRequester()->send(packet, *this->getReceiver());
+                        return this->getRequester()->send(packet, this->getReceiver());
                     }
 
                     /**
@@ -93,7 +84,7 @@ namespace com {
                      */
                     void listen()
                     {
-                        Serial.println("Transmitter: Listen packet...");
+                        Serial.println(F("Transmitter: Listen packet..."));
 
                         // Confirm packet
                         Packet * packet = new Packet(this->sensor);
@@ -113,11 +104,11 @@ namespace com {
                             packet->setTarget(response->getSensor());
                             packet->setDataByte1(response->getId());
                             packet->setDate(0);
-                            this->getRequester()->send(*packet);
+                            this->getRequester()->send(packet);
 
                             // Processing
                             if (this->hasActionManager()) {
-                                this->actionManager->processPacket(*response);
+                                this->actionManager->processPacket(response);
                             }
 
                             // Check flag last. If true, waiting for another response
@@ -128,6 +119,7 @@ namespace com {
 
                         // Free memory
                         delete packet;
+                        this->getReceiver()->cleanResponse();
                         delete response;
                     }
 
@@ -144,7 +136,7 @@ namespace com {
                     /**
                      * Action manager setter
                      */
-                    Transmitter * setActionManager(ActionManagerBase &actionManager);
+                    Transmitter * setActionManager(ActionManagerBase * actionManager);
 
                     /**
                      * Check if action manager has been defined
@@ -184,14 +176,12 @@ namespace com {
                     /**
                      * Constructor
                      */
-                    void construct(RF24 &radio, byte sensor, bool isMaster);
+                    void construct(RF24 * radio, byte sensor, bool isMaster);
 
-                    static unsigned int defaultTtl;
                     /**
-                     * Ttl before timeout (in seconds)
-                     * Ttl = time to live
+                     * Default ttl
                      */
-                    unsigned int ttl;
+                    static unsigned int defaultTtl;
 
                     /**
                      * Action manager to forward response received

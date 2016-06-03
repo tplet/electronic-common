@@ -10,6 +10,6 @@ using com::osteres::automation::transmission::packet::Packet;
 /**
  * Process packet
  */
-void ActionManagerBase::processPacket(Packet &packet) {
+void ActionManagerBase::processPacket(Packet * packet) {
     // Nothing to do in base class
 }
