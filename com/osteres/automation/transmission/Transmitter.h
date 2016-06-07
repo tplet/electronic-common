@@ -37,7 +37,7 @@ namespace com {
                     /**
                      * Constructor
                      */
-                    Transmitter(RF24 * radio, byte sensor, bool isMaster);
+                    Transmitter(RF24 * radio, byte sensor, bool isMaster = false);
 
                     /**
                      * Destructor
@@ -90,14 +90,14 @@ namespace com {
                         Packet * packet = new Packet(this->sensor);
                         packet->setCommand(Command::OK);
 
-                        Packet * response;
+                        Packet * response = NULL;
                         int i = 0;
 
                         bool last = false;
                         // Waiting for response
                         while (this->getReceiver()->listen() && !last) {
-
                             i++;
+
                             response = this->getReceiver()->getResponse();
 
                             // Send success receiving response
@@ -115,12 +115,14 @@ namespace com {
                             last = response->isLast();
                         }
 
-                        Serial.println("Transmitter: Stop listening. " + String(i) + " packet received and processed.");
+                        Serial.println(String(F("Transmitter: Stop listening. ")) + String(i) + F(" packet received and processed."));
 
                         // Free memory
                         delete packet;
-                        this->getReceiver()->cleanResponse();
                         delete response;
+
+                        // Clean response (no more used)
+                        this->getReceiver()->cleanResponse();
                     }
 
                     /**
@@ -186,22 +188,22 @@ namespace com {
                     /**
                      * Action manager to forward response received
                      */
-                    ActionManagerBase * actionManager;
+                    ActionManagerBase * actionManager = NULL;
 
                     /**
                      * Requester object
                      */
-                    Requester * requester;
+                    Requester * requester = NULL;
 
                     /**
                      * Received object
                      */
-                    Receiver * receiver;
+                    Receiver * receiver = NULL;
 
                     /**
                      * Radio for transmission
                      */
-                    RF24 * radio;
+                    RF24 * radio = NULL;
 
                     /**
                      * Sensor identifier

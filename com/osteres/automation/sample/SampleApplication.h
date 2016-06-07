@@ -89,12 +89,12 @@ namespace com
                     /**
                      * Screen
                      */
-                    LiquidCrystal * screen;
+                    LiquidCrystal * screen = NULL;
 
                     /**
                      * Counter
                      */
-                    Value<unsigned int> * counter;
+                    Value<unsigned int> * counter = NULL;
 
                     /**
                      * Screen pin light

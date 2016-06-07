@@ -61,12 +61,12 @@ namespace com
                     /**
                      * Radio used for transmission
                      */
-                    RF24 * radio;
+                    RF24 * radio = NULL;
 
                     /**
                      * Response packet
                      */
-                    Packet * response;
+                    Packet * response = NULL;
 
                     /**
                      * Sensor target which can receive packet

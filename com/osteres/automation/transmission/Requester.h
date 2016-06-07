@@ -77,12 +77,12 @@ namespace com
                     /**
                      * Radio transmitter
                      */
-                    RF24 * radio;
+                    RF24 * radio = NULL;
 
                     /**
                      * RTC object (optional)
                      */
-                    RTC_DS1307 * rtc;
+                    RTC_DS1307 * rtc = NULL;
 
                     /**
                      * Flag to indicate if request has succeeded

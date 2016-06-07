@@ -37,6 +37,11 @@ namespace com
                         Packet(byte sensor, byte id);
 
                         /**
+                         * Destructor
+                         */
+                        ~Packet();
+
+                        /**
                          * Get request identifier
                          */
                         byte getId();
@@ -153,6 +158,11 @@ namespace com
                         void setDataChar3(char data);
 
                     protected:
+                        /**
+                         * Constructor
+                         */
+                        void construct(byte sensor, byte id);
+
                         /**
                          * Packet identifier (uniq for each running sensor)
                          *

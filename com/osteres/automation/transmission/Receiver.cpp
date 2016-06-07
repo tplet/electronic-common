@@ -3,6 +3,7 @@
 //
 
 #include "Receiver.h"
+#include <com/osteres/util/Arduino.h>
 #include <com/osteres/automation/transmission/packet/Packet.h>
 
 using namespace com::osteres::automation::transmission;
@@ -29,7 +30,9 @@ Receiver::~Receiver() {
  * Clean class
  */
 void Receiver::cleanResponse() {
-    delete this->response;
+    if (this->hasResponse()) {
+        delete this->response;
+    }
 }
 
 /**
@@ -41,19 +44,23 @@ bool Receiver::listen() {
 
     // Prepare timeout
     unsigned long start = millis();
+    bool toReceive = true;
     bool noResponse = false;
+    bool available = false;
 
     // Try to read data
-    while (!noResponse) {
+    while (toReceive) {
         // Waiting for reading data
-        while (!this->radio->available() && !noResponse) {
+        do {
+            available = this->radio->available();
             if (millis() - start > this->timeout) {
                 noResponse = true;
+                toReceive = false;
             }
-        }
+        } while (!available && !noResponse);
 
         // Read response if available
-        if (!noResponse) {
+        if (available) {
             // Clean previous response and prepare another
             this->cleanResponse();
             this->response = new Packet();
@@ -61,15 +68,17 @@ bool Receiver::listen() {
             // Read response
             this->radio->read(this->response, this->radio->getDynamicPayloadSize());
 
-            // Check if packet are right destined to this (false positive)
-            if (this->response->getTarget() != this->sensor) {
+            // Check if packet are right destined to this (false positive),
+            // if not, try again until packet received is for this sensor (can take a long time if many packet exchanged)
+            if (this->response != 0 && this->response->getTarget() != this->sensor) {
                 this->response->resetData();
-                noResponse = false;
+            } else {
+                toReceive = false;
             }
         }
     }
 
-    // Security: Remove response if no response...
+    // For memory: Remove response if no response...
     if (noResponse) {
         this->cleanResponse();
     }
@@ -85,7 +94,7 @@ bool Receiver::listen() {
  * Flag to indicate if response has been received
  */
 bool Receiver::hasResponse() {
-    return this->response != 0;
+    return this->response != NULL;
 }
 
 /**

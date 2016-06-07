@@ -7,7 +7,7 @@
 using namespace com::osteres::automation::transmission;
 
 /**
- * Default ttl (in seconds)
+ * Default ttl (in milliseconds)
  */
 unsigned int Transmitter::defaultTtl = 1000;
 

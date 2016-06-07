@@ -15,14 +15,7 @@ namespace util = com::osteres::util;
  */
 Packet::Packet()
 {
-    this->resetData();
-    this->sensor = 0;
-    this->id = 0;
-    this->date = 0;
-    this->target = 0;
-    this->command = 0;
-    this->last = false;
-    this->date = 0;
+    this->construct(0, 0);
 }
 
 /**
@@ -30,20 +23,29 @@ Packet::Packet()
  */
 Packet::Packet(byte sensor)
 {
-    this->resetData();
-    this->sensor = sensor;
-    this->id = 0;
-    this->date = 0;
-    this->target = 0;
-    this->command = 0;
-    this->last = false;
-    this->date = 0;
+    this->construct(sensor, 0);
 }
 
 /**
  * Constructor with sensor and packet id
  */
 Packet::Packet(byte sensor, byte id)
+{
+    this->construct(sensor, id);
+}
+
+/**
+ * Destructor
+ */
+Packet::~Packet()
+{
+    // Nothing to do
+}
+
+/**
+ * Constructor
+ */
+void Packet::construct(byte sensor, byte id)
 {
     this->resetData();
     this->sensor = sensor;
