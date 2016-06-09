@@ -20,14 +20,6 @@ Transmitter::Transmitter(RF24 * radio, byte sensor, bool isMaster)
 }
 
 /**
- * Constructor
- */
-Transmitter::Transmitter(RF24 * radio, byte sensor)
-{
-    Transmitter::construct(radio, sensor, false);
-}
-
-/**
  * Destructor
  */
 Transmitter::~Transmitter()

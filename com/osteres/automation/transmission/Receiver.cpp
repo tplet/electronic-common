@@ -112,3 +112,11 @@ void Receiver::setTimeout(unsigned int timeout)
 {
     this->timeout = timeout;
 }
+
+/**
+ * Get timeout
+ */
+unsigned int Receiver::getTimeout()
+{
+    return this->timeout;
+}

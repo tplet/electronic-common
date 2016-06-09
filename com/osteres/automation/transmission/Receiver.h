@@ -57,6 +57,11 @@ namespace com
                      * Set timeout
                      */
                     void setTimeout(unsigned int timeout);
+
+                    /**
+                     * Get timeout
+                     */
+                    unsigned int getTimeout();
                 protected:
                     /**
                      * Radio used for transmission
