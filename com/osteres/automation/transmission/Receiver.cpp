@@ -32,6 +32,7 @@ Receiver::~Receiver() {
 void Receiver::cleanResponse() {
     if (this->hasResponse()) {
         delete this->response;
+        this->response = NULL;
     }
 }
 
