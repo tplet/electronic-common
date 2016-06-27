@@ -197,7 +197,7 @@ namespace com
                          *
                          * 1 byte
                          */
-                        bool last;
+                        bool last = true;
 
                         /**
                          * Timestamp associated to data
