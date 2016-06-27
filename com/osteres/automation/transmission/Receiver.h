@@ -26,7 +26,7 @@ namespace com
                     /**
                      * Constructor
                      */
-                    Receiver(RF24 * radio, byte sensor, unsigned int timeout);
+                    Receiver(RF24 * radio, uint64_t readingChannel, byte sensor, unsigned int timeout);
 
                     /**
                      * Destructor
@@ -57,6 +57,12 @@ namespace com
                      * Set timeout
                      */
                     void setTimeout(unsigned int timeout);
+
+                    /**
+                     * Set channel to read
+                     */
+                    void setReadingChannel(uint64_t readingChannel);
+
                 protected:
                     /**
                      * Radio used for transmission
@@ -77,6 +83,11 @@ namespace com
                      * Timeout after this waiting for response has been stoped
                      */
                     unsigned int timeout;
+
+                    /**
+                     * Channel to read
+                     */
+                    uint64_t readingChannel;
                 };
             }
         }

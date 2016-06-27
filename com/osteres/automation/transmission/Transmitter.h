@@ -50,20 +50,18 @@ namespace com {
                      */
                     void setup()
                     {
-                        uint64_t writingChannel = Command::CHANNEL_SLAVE;
-                        uint64_t readingChannel = Command::CHANNEL_MASTER;
-                        if (this->isMaster()) {
-                            writingChannel = Command::CHANNEL_MASTER;
-                            readingChannel = Command::CHANNEL_SLAVE;
-                        }
-
                         // Init and configure radio transmitter
                         this->radio->begin();
                         this->radio->setAutoAck(true);
                         this->radio->setRetries(15, 15);
                         this->radio->enableDynamicPayloads();
-                        this->radio->openWritingPipe(writingChannel);
-                        this->radio->openReadingPipe(1, readingChannel);
+                        this->radio->openWritingPipe(this->getWritingChannel());
+                        this->radio->openReadingPipe(1, this->getReadingChannel());
+                        this->radio->startListening(); // TODO: Remove ?
+
+                        // Prepare requester and receiver
+                        this->requester = new Requester(this->radio, this->getWritingChannel());
+                        this->receiver = new Receiver(this->radio, this->getReadingChannel(), this->sensor, getDefaultTTL());
 
                         Serial.println(F("Transmitter: Setup done."));
                     }
@@ -174,6 +172,46 @@ namespace com {
                         return this->master;
                     }
 
+                    /**
+                     * Set channel to read
+                     */
+                    void setReadingChannel(uint64_t channel)
+                    {
+                        this->readingChannel = channel;
+
+                        if (this->receiver != NULL) {
+                            this->receiver->setReadingChannel(this->readingChannel);
+                        }
+                    }
+
+                    /**
+                     * Set channel to write
+                     */
+                    void setWritingChannel(uint64_t channel)
+                    {
+                        this->writingChannel = channel;
+
+                        if (this->requester != NULL) {
+                            this->requester->setWritingChannel(this->writingChannel);
+                        }
+                    }
+
+                    /**
+                     * Get writing channel
+                     */
+                    uint64_t getWritingChannel()
+                    {
+                        return this->writingChannel;
+                    }
+
+                    /**
+                     * Get reading channel
+                     */
+                    uint64_t getReadingChannel()
+                    {
+                        return this->readingChannel;
+                    }
+
                 protected:
                     /**
                      * Constructor
@@ -215,6 +253,16 @@ namespace com {
                      * If false, slave mode
                      */
                     bool master;
+
+                    /**
+                     * Channel to read
+                     */
+                    uint64_t readingChannel;
+
+                    /**
+                     * Channel to write
+                     */
+                    uint64_t writingChannel;
                 };
             }
         }

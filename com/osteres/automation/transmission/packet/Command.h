@@ -27,7 +27,7 @@ namespace com
                          */
                         static uint64_t const CHANNEL_SLAVE = 0xFF0000000001;
                         /**
-                         * Channel for slave
+                         * Channel for master
                          */
                         static uint64_t const CHANNEL_MASTER = 0xFF0000000002;
 

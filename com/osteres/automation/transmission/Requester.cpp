@@ -14,8 +14,9 @@ using namespace com::osteres::automation::transmission;
 /**
  * Constructor
  */
-Requester::Requester(RF24 * radio) {
+Requester::Requester(RF24 * radio, uint64_t writingChannel) {
     this->radio = radio;
+    this->setWritingChannel(writingChannel);
 }
 
 /**
@@ -87,8 +88,17 @@ void Requester::doSend(Packet * packet) {
         packet->setDate(this->rtc->now().unixtime());
     }
 
+    // Prepare
+    this->radio->stopListening();
+    this->radio->openWritingPipe(this->writingChannel); // TODO: Useless ?
+    delay(10); // TODO: Remove ?
+
     // Send
     this->radio->write(packet, sizeof(packet));
+    delay(10); // TODO: Remove ?
+
+    // Restore
+    this->radio->startListening();
 }
 
 /**
@@ -120,4 +130,12 @@ bool Requester::doListenSuccessSent(Packet * packet, Receiver * receiver) {
  */
 bool Requester::isSuccess() {
     return this->success;
+}
+
+/**
+ * Set channel to write
+ */
+void Requester::setWritingChannel(uint64_t writingChannel)
+{
+    this->writingChannel = writingChannel;
 }

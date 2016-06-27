@@ -13,8 +13,9 @@ using com::osteres::automation::transmission::packet::Packet;
 /**
  * Constructor
  */
-Receiver::Receiver(RF24 * radio, byte sensor, unsigned int timeout) {
+Receiver::Receiver(RF24 * radio, uint64_t readingChannel, byte sensor, unsigned int timeout) {
     this->radio = radio;
+    this->setReadingChannel(readingChannel);
     this->sensor = sensor;
     this->timeout = timeout;
 }
@@ -41,7 +42,7 @@ void Receiver::cleanResponse() {
  */
 bool Receiver::listen() {
     // Start listening
-    this->radio->startListening();
+    //this->radio->startListening(); // TODO: Remove ?
 
     // Prepare timeout
     unsigned long start = millis();
@@ -85,7 +86,7 @@ bool Receiver::listen() {
     }
 
     // Stop listening
-    this->radio->stopListening();
+    //this->radio->stopListening(); // TODO: Remove ?
 
     // Return flag to indicate if response has been received
     return !noResponse;
@@ -111,4 +112,12 @@ Packet * Receiver::getResponse() {
 void Receiver::setTimeout(unsigned int timeout)
 {
     this->timeout = timeout;
+}
+
+/**
+ * Set channel to read
+ */
+void Receiver::setReadingChannel(uint64_t readingChannel)
+{
+    this->readingChannel = readingChannel;
 }

@@ -26,7 +26,7 @@ namespace com
                     /**
                      * Constructor
                      */
-                    Requester(RF24 * radio);
+                    Requester(RF24 * radio, uint64_t writingChannel);
 
                     /**
                      * Destructor
@@ -63,6 +63,11 @@ namespace com
                      */
                     bool isSuccess();
 
+                    /**
+                     * Set channel to write
+                     */
+                    void setWritingChannel(uint64_t writingChannel);
+
                 protected:
                     /**
                      * Prepare packet and send it only (no response attempted)
@@ -88,6 +93,11 @@ namespace com
                      * Flag to indicate if request has succeeded
                      */
                     bool success;
+
+                    /**
+                     * Channel to write
+                     */
+                    uint64_t writingChannel;
                 };
 
             }

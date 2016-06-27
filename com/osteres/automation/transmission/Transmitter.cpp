@@ -46,9 +46,15 @@ void Transmitter::construct(RF24 * radio, byte sensor, bool isMaster)
     this->sensor = sensor;
     this->master = master;
 
-    // Prepare requester and receiver
-    this->requester = new Requester(this->radio);
-    this->receiver = new Receiver(this->radio, this->sensor, getDefaultTTL());
+    // Channels
+    uint64_t writingChannel = Command::CHANNEL_SLAVE;
+    uint64_t readingChannel = Command::CHANNEL_MASTER;
+    if (this->isMaster()) {
+        writingChannel = Command::CHANNEL_MASTER;
+        readingChannel = Command::CHANNEL_SLAVE;
+    }
+    this->setReadingChannel(readingChannel);
+    this->setWritingChannel(writingChannel);
 }
 
 /**
