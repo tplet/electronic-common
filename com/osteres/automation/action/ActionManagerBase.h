@@ -24,7 +24,7 @@ namespace com
                      * Process packet
                      * Execute right action associated to this packet
                      */
-                    void processPacket(Packet * packet);
+                    virtual void processPacket(Packet * packet);
                 };
             }
         }

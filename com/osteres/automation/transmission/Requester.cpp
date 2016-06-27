@@ -45,7 +45,7 @@ Requester * Requester::setRTC(RTC_DS1307 * rtc) {
  * Flag to indicate if can use RTC object
  */
 bool Requester::useRTC() {
-    return this->rtc != 0;
+    return this->rtc != NULL;
 }
 
 /**
@@ -88,17 +88,15 @@ void Requester::doSend(Packet * packet) {
         packet->setDate(this->rtc->now().unixtime());
     }
 
-    // Prepare
+    // Ensure that radio not currently listening
     this->radio->stopListening();
-    this->radio->openWritingPipe(this->writingChannel); // TODO: Useless ?
-    delay(10); // TODO: Remove ?
+
+    // Writing channel
+    this->radio->openWritingPipe(this->writingChannel);
 
     // Send
-    this->radio->write(packet, sizeof(packet));
-    delay(10); // TODO: Remove ?
-
-    // Restore
-    this->radio->startListening();
+    this->radio->write(packet, sizeof(Packet));
+    delay(10);
 }
 
 /**

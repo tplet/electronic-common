@@ -49,10 +49,7 @@ namespace com {
                         this->radio->begin();
                         this->radio->setAutoAck(true);
                         this->radio->setRetries(15, 15);
-                        this->radio->enableDynamicPayloads();
-                        this->radio->openWritingPipe(this->getWritingChannel());
-                        this->radio->openReadingPipe(1, this->getReadingChannel());
-                        this->radio->startListening(); // TODO: Remove ?
+                        //this->radio->enableDynamicPayloads();
 
                         // Prepare requester and receiver
                         this->requester = new Requester(this->radio, this->getWritingChannel());
@@ -80,24 +77,24 @@ namespace com {
                         Serial.println(F("Transmitter: Listen packet..."));
 
                         // Confirm packet
-                        Packet * packet = new Packet(this->sensor);
-                        packet->setCommand(Command::OK);
+                        Packet * packetOk = new Packet(this->sensor);
+                        packetOk->setCommand(Command::OK);
 
                         Packet * response = NULL;
                         int i = 0;
 
                         bool last = false;
                         // Waiting for response
-                        while (this->getReceiver()->listen() && !last) {
+                        while (!last && this->getReceiver()->listen()) {
                             i++;
 
                             response = this->getReceiver()->getResponse();
 
                             // Send success receiving response
-                            packet->setTarget(response->getSensor());
-                            packet->setDataByte1(response->getId());
-                            packet->setDate(0);
-                            this->getRequester()->send(packet);
+                            packetOk->setTarget(response->getSensor());
+                            packetOk->setDataByte1(response->getId());
+                            packetOk->setDate(0);
+                            this->getRequester()->send(packetOk);
 
                             // Processing
                             if (this->hasActionManager()) {
@@ -106,14 +103,20 @@ namespace com {
 
                             // Check flag last. If true, waiting for another response
                             last = response->isLast();
+
+                            // Clean receiver response (no need this instance anymore)
+                            this->getReceiver()->cleanResponse();
                         }
 
-                        Serial.println(String(F("Transmitter: Stop listening. ")) + String(i) + F(" packet received and processed."));
+                        Serial.print(F("Transmitter: Stop listening. "));
+                        Serial.print(i);
+                        Serial.println(F(" packet received and processed."));
 
                         // Free memory
-                        delete packet;
-                        delete response;
-
+                        if (packetOk != NULL) {
+                            delete packetOk;
+                            packetOk = NULL;
+                        }
                         // Clean response (no more used)
                         this->getReceiver()->cleanResponse();
                     }
@@ -131,14 +134,14 @@ namespace com {
                     /**
                      * Action manager setter
                      */
-                    Transmitter * setActionManager(ActionManagerBase * actionManager);
+                    void setActionManager(ActionManagerBase * actionManager);
 
                     /**
                      * Check if action manager has been defined
                      */
                     bool hasActionManager()
                     {
-                        return this->actionManager != 0;
+                        return this->actionManager != NULL;
                     }
 
                     /**

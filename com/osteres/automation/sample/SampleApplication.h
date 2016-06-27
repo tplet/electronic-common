@@ -43,7 +43,10 @@ namespace com
                     ~SampleApplication()
                     {
                         // Remove counter
-                        delete this->counter;
+                        if (this->counter != NULL) {
+                            delete this->counter;
+                            this->counter = NULL;
+                        }
                     }
 
                     /**

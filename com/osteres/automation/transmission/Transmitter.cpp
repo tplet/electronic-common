@@ -25,8 +25,14 @@ Transmitter::Transmitter(RF24 * radio, byte sensor, bool isMaster)
 Transmitter::~Transmitter()
 {
     // Remove requester and receiver
-    delete this->requester;
-    delete this->receiver;
+    if (this->requester != NULL) {
+        delete this->requester;
+        this->requester = NULL;
+    }
+    if (this->receiver != NULL) {
+        delete this->receiver;
+        this->receiver = NULL;
+    }
 }
 
 /**
@@ -36,7 +42,7 @@ void Transmitter::construct(RF24 * radio, byte sensor, bool isMaster)
 {
     this->radio = radio;
     this->sensor = sensor;
-    this->master = master;
+    this->master = isMaster;
 
     // Channels
     uint64_t writingChannel = Command::CHANNEL_SLAVE;
@@ -68,10 +74,8 @@ void Transmitter::setDefaultTTL(unsigned int ttl)
 /**
  * Action manager setter
  */
-Transmitter * Transmitter::setActionManager(ActionManagerBase * actionManager) {
+void Transmitter::setActionManager(ActionManagerBase * actionManager) {
     this->actionManager = actionManager;
-
-    return this;
 }
 
 /**

@@ -41,14 +41,21 @@ void Receiver::cleanResponse() {
  * Listen response
  */
 bool Receiver::listen() {
+    // Ensure that no previous response (for memory security)
+    this->cleanResponse();
+
+    // Reading channel
+    this->radio->openReadingPipe(1, this->readingChannel);
+
     // Start listening
-    //this->radio->startListening(); // TODO: Remove ?
+    this->radio->startListening();
 
     // Prepare timeout
     unsigned long start = millis();
     bool toReceive = true;
     bool noResponse = false;
     bool available = false;
+    Packet * response = NULL;
 
     // Try to read data
     while (toReceive) {
@@ -65,28 +72,29 @@ bool Receiver::listen() {
         if (available) {
             // Clean previous response and prepare another
             this->cleanResponse();
-            this->response = new Packet();
+            response = new Packet();
 
             // Read response
-            this->radio->read(this->response, this->radio->getDynamicPayloadSize());
+            while (this->radio->available()) {
+                this->radio->read(response, sizeof(Packet));
+            }
 
             // Check if packet are right destined to this (false positive),
             // if not, try again until packet received is for this sensor (can take a long time if many packet exchanged)
-            if (this->response != 0 && this->response->getTarget() != this->sensor) {
-                this->response->resetData();
-            } else {
+            if (response != NULL && response->getTarget() != this->sensor) {
+                delete response;
+                response = NULL;
+                // Then, listen again response
+            } // Response successfully received
+            else {
                 toReceive = false;
+                this->response = response;
             }
         }
     }
 
-    // For memory: Remove response if no response...
-    if (noResponse) {
-        this->cleanResponse();
-    }
-
     // Stop listening
-    //this->radio->stopListening(); // TODO: Remove ?
+    this->radio->stopListening();
 
     // Return flag to indicate if response has been received
     return !noResponse;
