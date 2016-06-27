@@ -59,6 +59,11 @@ namespace com
                     void setTimeout(unsigned int timeout);
 
                     /**
+                     * Get timeout
+                     */
+                    unsigned int getTimeout();
+
+                    /**
                      * Set channel to read
                      */
                     void setReadingChannel(uint64_t readingChannel);

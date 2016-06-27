@@ -115,6 +115,15 @@ void Receiver::setTimeout(unsigned int timeout)
 }
 
 /**
+ * Get timeout
+ */
+unsigned int Receiver::getTimeout()
+{
+    return this->timeout;
+}
+
+
+/**
  * Set channel to read
  */
 void Receiver::setReadingChannel(uint64_t readingChannel)

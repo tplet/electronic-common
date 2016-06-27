@@ -32,11 +32,6 @@ namespace com {
                     /**
                      * Constructor
                      */
-                    Transmitter(RF24 * radio, byte sensor);
-
-                    /**
-                     * Constructor
-                     */
                     Transmitter(RF24 * radio, byte sensor, bool isMaster = false);
 
                     /**
