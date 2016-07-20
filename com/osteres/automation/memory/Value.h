@@ -5,7 +5,10 @@
 #ifndef COM_OSTERES_AUTOMATION_MEMORY_VALUE_H
 #define COM_OSTERES_AUTOMATION_MEMORY_VALUE_H
 
-#include <Arduino.h>
+#ifndef Arduino_h
+//#include <Arduino.h>
+#endif
+
 #include <EEPROM.h>
 #include <com/osteres/automation/memory/ValueBase.h>
 

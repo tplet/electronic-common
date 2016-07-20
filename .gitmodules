@@ -1,0 +1,3 @@
+[submodule "vendors/eeprom"]
+	path = vendors/eeprom
+	url = git@github.com:osteres/EEPROM.git
