@@ -20,4 +20,4 @@ target_include_directories(${NAME} PUBLIC .)
 ## Dependencies
 # EEPROM
 add_subdirectory(./vendors/eeprom/)
-#target_link_libraries(${NAME} common)
+target_link_libraries(${NAME} eeprom)
