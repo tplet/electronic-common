@@ -18,6 +18,6 @@ add_library(${NAME} ${FILES_CPP} ${FILES_H})
 target_include_directories(${NAME} PUBLIC .)
 
 ## Dependencies
-# EEPROM
-#add_subdirectory(./vendors/eeprom/)
-#target_link_libraries(${NAME} eeprom)
+# RF24
+add_subdirectory(./vendors/RF24/)
+target_link_libraries(${NAME} RF24)

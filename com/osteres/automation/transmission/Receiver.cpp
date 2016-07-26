@@ -3,7 +3,8 @@
 //
 
 #include "Receiver.h"
-#include <com/osteres/util/Arduino.h>
+#include <cstdlib>
+
 #include <com/osteres/automation/transmission/packet/Packet.h>
 
 using namespace com::osteres::automation::transmission;
@@ -13,7 +14,7 @@ using com::osteres::automation::transmission::packet::Packet;
 /**
  * Constructor
  */
-Receiver::Receiver(RF24 * radio, uint64_t readingChannel, byte sensor, unsigned int timeout) {
+Receiver::Receiver(RF24 * radio, unsigned long long readingChannel, unsigned char sensor, unsigned int timeout) {
     this->radio = radio;
     this->setReadingChannel(readingChannel);
     this->sensor = sensor;
@@ -134,7 +135,7 @@ unsigned int Receiver::getTimeout()
 /**
  * Set channel to read
  */
-void Receiver::setReadingChannel(uint64_t readingChannel)
+void Receiver::setReadingChannel(unsigned long long readingChannel)
 {
     this->readingChannel = readingChannel;
 }

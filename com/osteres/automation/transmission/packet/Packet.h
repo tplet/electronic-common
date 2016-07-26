@@ -5,12 +5,6 @@
 #ifndef COM_OSTERES_AUTOMATION_TRANSMISSION_PACKET_PACKET_H
 #define COM_OSTERES_AUTOMATION_TRANSMISSION_PACKET_PACKET_H
 
-
-#ifndef Arduino_h
-//#include <Arduino.h>
-typedef uint8_t byte;
-#endif
-
 namespace com
 {
     namespace osteres
@@ -31,12 +25,12 @@ namespace com
                         /**
                          * Constructor with sensor
                          */
-                        Packet(byte sensor);
+                        Packet(unsigned char sensor);
 
                         /**
                          * Constructor with sensor and id
                          */
-                        Packet(byte sensor, byte id);
+                        Packet(unsigned char sensor, unsigned char id);
 
                         /**
                          * Destructor
@@ -46,12 +40,12 @@ namespace com
                         /**
                          * Get request identifier
                          */
-                        byte getId();
+                        unsigned char getId();
 
                         /**
                          * Set request identifier
                          */
-                        void setId(byte id);
+                        void setId(unsigned char id);
 
                         /**
                          * Set request identifier to next value
@@ -61,32 +55,32 @@ namespace com
                         /**
                          * Get sensor identifier
                          */
-                        byte getSensor();
+                        unsigned char getSensor();
 
                         /**
                          * Set sensor identifier
                          */
-                        void setSensor(byte sensor);
+                        void setSensor(unsigned char sensor);
 
                         /**
                          * Get command identifier
                          */
-                        byte getCommand();
+                        unsigned char getCommand();
 
                         /**
                          * Set command identifier
                          */
-                        void setCommand(byte command);
+                        void setCommand(unsigned char command);
 
                         /**
                          * Get target of request
                          */
-                        byte getTarget();
+                        unsigned char getTarget();
 
                         /**
                          * Set target of request
                          */
-                        void setTarget(byte target);
+                        void setTarget(unsigned char target);
 
                         /**
                          * Get timestamp associated to data
@@ -115,21 +109,21 @@ namespace com
                          */
                         void resetData();
 
-                        byte getDataByte1();
+                        unsigned char getDataUChar1();
 
-                        byte getDataByte2();
+                        unsigned char getDataUChar2();
 
-                        byte getDataByte3();
+                        unsigned char getDataUChar3();
 
-                        byte getDataByte4();
+                        unsigned char getDataUChar4();
 
-                        void setDataByte1(byte data);
+                        void setDataUChar1(unsigned char data);
 
-                        void setDataByte2(byte data);
+                        void setDataUChar2(unsigned char data);
 
-                        void setDataByte3(byte data);
+                        void setDataUChar3(unsigned char data);
 
-                        void setDataByte4(byte data);
+                        void setDataUChar4(unsigned char data);
 
                         long getDataLong1();
 
@@ -163,35 +157,35 @@ namespace com
                         /**
                          * Constructor
                          */
-                        void construct(byte sensor, byte id);
+                        void construct(unsigned char sensor, unsigned char id);
 
                         /**
                          * Packet identifier (uniq for each running sensor)
                          *
                          * 1 byte
                          */
-                        byte id;
+                        unsigned char id;
 
                         /**
                          * Sensor identifier (uniq for all automation park)
                          *
                          * 1 byte
                          */
-                        byte sensor;
+                        unsigned char sensor;
 
                         /**
                          * Command identifier
                          *
                          * 1 byte
                          */
-                        byte command;
+                        unsigned char command;
 
                         /**
                          * Target of request
                          *
                          * 1 byte
                          */
-                        byte target;
+                        unsigned char target;
 
                         /**
                          * Flag to indicate that packet is the last.
@@ -223,10 +217,10 @@ namespace com
                          * Data byte containers
                          * 4 x 1 byte = 4 bytes
                          */
-                        byte dataByte1;
-                        byte dataByte2;
-                        byte dataByte3;
-                        byte dataByte4;
+                        unsigned char dataUChar1;
+                        unsigned char dataUChar2;
+                        unsigned char dataUChar3;
+                        unsigned char dataUChar4;
 
                         /**
                          * Data long containers

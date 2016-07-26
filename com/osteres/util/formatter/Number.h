@@ -5,7 +5,6 @@
 #ifndef COM_OSTERES_UTIL_FORMATTER_NUMBER_H
 #define COM_OSTERES_UTIL_FORMATTER_NUMBER_H
 
-#include <Arduino.h>
 #include <string.h>
 
 namespace com {

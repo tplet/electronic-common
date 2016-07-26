@@ -5,13 +5,10 @@
 #ifndef COM_OSTERES_AUTOMATION_TRANSMISSION_RECEIVER_H
 #define COM_OSTERES_AUTOMATION_TRANSMISSION_RECEIVER_H
 
-#include <Arduino.h>
-#include <SPI.h>
-#include <RF24/RF24.h>
+#include <RF24.h>
 #include <com/osteres/automation/transmission/packet/Packet.h>
 
 using com::osteres::automation::transmission::packet::Packet;
-typedef uint8_t byte;
 
 namespace com
 {
@@ -26,7 +23,7 @@ namespace com
                     /**
                      * Constructor
                      */
-                    Receiver(RF24 * radio, uint64_t readingChannel, byte sensor, unsigned int timeout);
+                    Receiver(RF24 * radio, unsigned long long readingChannel, unsigned char sensor, unsigned int timeout);
 
                     /**
                      * Destructor
@@ -66,7 +63,7 @@ namespace com
                     /**
                      * Set channel to read
                      */
-                    void setReadingChannel(uint64_t readingChannel);
+                    void setReadingChannel(unsigned long long readingChannel);
 
                 protected:
                     /**
@@ -82,7 +79,7 @@ namespace com
                     /**
                      * Sensor target which can receive packet
                      */
-                    byte sensor;
+                    unsigned char sensor;
 
                     /**
                      * Timeout after this waiting for response has been stoped
@@ -92,7 +89,7 @@ namespace com
                     /**
                      * Channel to read
                      */
-                    uint64_t readingChannel;
+                    unsigned long long readingChannel;
                 };
             }
         }
