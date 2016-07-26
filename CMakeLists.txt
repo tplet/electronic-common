@@ -4,8 +4,8 @@ cmake_minimum_required(VERSION 3.3)
 set(NAME common)
 
 # Files
-file(GLOB_RECURSE FILES_CPP "*.cpp")
-file(GLOB_RECURSE FILES_H "*.h")
+file(GLOB_RECURSE FILES_CPP "com/*.cpp")
+file(GLOB_RECURSE FILES_H "com/*.h")
 
 # Ignores some paths
 include(CMakeLists-ignore.txt)
@@ -19,8 +19,5 @@ target_include_directories(${NAME} PUBLIC .)
 
 ## Dependencies
 # EEPROM
-add_subdirectory(./vendors/eeprom/)
-target_link_libraries(${NAME} eeprom)
-# LiquidCrystal
-add_subdirectory(./vendors/LiquidCrystal/)
-target_link_libraries(${NAME} LiquidCrystal)
+#add_subdirectory(./vendors/eeprom/)
+#target_link_libraries(${NAME} eeprom)
