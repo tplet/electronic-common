@@ -36,7 +36,7 @@ void Requester::clean() {
  */
 bool Requester::send(Packet * packet, Receiver * receiver) {
 
-    Serial.println(F("Requester: Send packet and wait confirmation."));
+    //Serial.println(F("Requester: Send packet and wait confirmation."));
 
     // Send
     this->doSend(packet);
@@ -52,7 +52,7 @@ bool Requester::send(Packet * packet, Receiver * receiver) {
  * Send packet without checking success receiving
  */
 bool Requester::send(Packet * packet) {
-    Serial.println(F("Requester: Send packet without waiting for confirmation."));
+    //Serial.println(F("Requester: Send packet without waiting for confirmation."));
 
     // Send
     this->doSend(packet);
@@ -94,9 +94,9 @@ bool Requester::doListenSuccessSent(Packet * packet, Receiver * receiver) {
     }
     // Timeout or no OK command received
     if (!success) {
-        Serial.println(F("Requester: No confirmation received..."));
+        //Serial.println(F("Requester: No confirmation received..."));
     } else {
-        Serial.println(F("Requester: Confirmation received!"));
+        //Serial.println(F("Requester: Confirmation received!"));
     }
 
     return success;

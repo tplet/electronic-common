@@ -5,7 +5,6 @@
 #ifndef COM_OSTERES_AUTOMATION_TRANSMISSION_TRANSMITTER_H
 #define COM_OSTERES_AUTOMATION_TRANSMISSION_TRANSMITTER_H
 
-#include <SPI.h>
 #include <RF24.h>
 #include "nRF24L01.h"
 #include <com/osteres/automation/transmission/packet/Packet.h>
@@ -52,7 +51,7 @@ namespace com {
                         this->requester = new Requester(this->radio, this->getWritingChannel());
                         this->receiver = new Receiver(this->radio, this->getReadingChannel(), this->sensor, getDefaultTTL());
 
-                        Serial.println(F("Transmitter: Setup done."));
+                        //Serial.println(F("Transmitter: Setup done."));
                     }
 
                     /**
@@ -71,7 +70,7 @@ namespace com {
                      */
                     void listen()
                     {
-                        Serial.println(F("Transmitter: Listen packet..."));
+                        //Serial.println(F("Transmitter: Listen packet..."));
 
                         // Confirm packet
                         Packet * packetOk = new Packet(this->sensor);
@@ -105,9 +104,9 @@ namespace com {
                             this->getReceiver()->cleanResponse();
                         }
 
-                        Serial.print(F("Transmitter: Stop listening. "));
-                        Serial.print(i);
-                        Serial.println(F(" packet received and processed."));
+                        //Serial.print(F("Transmitter: Stop listening. "));
+                        //Serial.print(i);
+                        //Serial.println(F(" packet received and processed."));
 
                         // Free memory
                         if (packetOk != NULL) {
