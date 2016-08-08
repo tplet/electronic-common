@@ -5,7 +5,10 @@
 #ifndef COM_OSTERES_UTIL_FORMATTER_NUMBER_H
 #define COM_OSTERES_UTIL_FORMATTER_NUMBER_H
 
-#include <string.h>
+#include <string>
+
+using std::string;
+using std::to_string;
 
 namespace com {
     namespace osteres {
@@ -18,8 +21,8 @@ namespace com {
                      *
                      * @param uint8_t value
                      */
-                    static String twoDigit(uint8_t value) {
-                        return (value < 10 ? "0" : "") + String(value);
+                    static string twoDigit(uint8_t value) {
+                        return (value < 10 ? "0" : "") + to_string(value);
                     }
                 };
             }
