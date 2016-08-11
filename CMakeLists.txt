@@ -2,6 +2,8 @@ cmake_minimum_required(VERSION 3.3)
 
 # Library name
 set(NAME common)
+# RF24 dependency
+set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -l rf24-bcm")
 
 # Files
 file(GLOB_RECURSE FILES_CPP "com/*.cpp")
@@ -23,5 +25,5 @@ target_include_directories(${NAME} PUBLIC .)
 
 ## Dependencies
 # RF24
-add_subdirectory(./vendors/RF24/)
-target_link_libraries(${NAME} RF24)
+#add_subdirectory(./vendors/RF24/)
+#target_link_libraries(${NAME} RF24)
