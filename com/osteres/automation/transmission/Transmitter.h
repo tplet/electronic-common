@@ -5,8 +5,8 @@
 #ifndef COM_OSTERES_AUTOMATION_TRANSMISSION_TRANSMITTER_H
 #define COM_OSTERES_AUTOMATION_TRANSMISSION_TRANSMITTER_H
 
-#include <RF24.h>
-#include "nRF24L01.h"
+#include <RF24/RF24.h>
+#include "RF24/nRF24L01.h"
 #include <com/osteres/automation/transmission/packet/Packet.h>
 #include <com/osteres/automation/action/ActionManagerBase.h>
 #include <com/osteres/automation/transmission/Requester.h>

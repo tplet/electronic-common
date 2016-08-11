@@ -5,7 +5,7 @@
 #ifndef COM_OSTERES_AUTOMATION_TRANSMISSION_RECEIVER_H
 #define COM_OSTERES_AUTOMATION_TRANSMISSION_RECEIVER_H
 
-#include <RF24.h>
+#include <RF24/RF24.h>
 #include <com/osteres/automation/transmission/packet/Packet.h>
 
 using com::osteres::automation::transmission::packet::Packet;
