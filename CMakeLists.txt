@@ -17,7 +17,6 @@ add_library(${NAME} ${FILES_CPP} ${FILES_H})
 # Compiler
 set_property(TARGET ${NAME} PROPERTY CXX_STANDARD 11)
 set_property(TARGET ${NAME} PROPERTY CXX_STANDARD_REQUIRED ON)
-set_property(TARGET ${NAME} APPEND PROPERTY COMPILE_FLAGS " -l rf24-bcm ")
 
 # Permit to include files (similar as defining ./ directory to include path)
 target_include_directories(${NAME} PUBLIC .)
@@ -26,3 +25,5 @@ target_include_directories(${NAME} PUBLIC .)
 # RF24
 #add_subdirectory(./vendors/RF24/)
 #target_link_libraries(${NAME} RF24)
+# RF24 (external: must be installed before)
+target_link_libraries(${EXECUTABLE} rf24-bcm)
