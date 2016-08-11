@@ -6,20 +6,23 @@
 #define COM_OSTERES_AUTOMATION_APPLICATION_H
 
 
-namespace com {
-    namespace osteres {
-        namespace automation {
+namespace com
+{
+    namespace osteres
+    {
+        namespace automation
+        {
             class Application {
             public:
                 /**
                  * Process business work
                  */
-                virtual void process();
+                virtual void process() = 0;
 
                 /**
                  * Setup application
                  */
-                virtual void setup();
+                virtual void setup() = 0;
             };
         }
     }
