@@ -14,6 +14,10 @@ include(CMakeLists-ignore.txt)
 project("lib${NAME}")
 add_library(${NAME} ${FILES_CPP} ${FILES_H})
 
+# Compiler
+set_property(TARGET ${NAME} PROPERTY CXX_STANDARD 11)
+set_property(TARGET ${NAME} PROPERTY CXX_STANDARD_REQUIRED ON)
+
 # Permit to include files (similar as defining ./ directory to include path)
 target_include_directories(${NAME} PUBLIC .)
 
