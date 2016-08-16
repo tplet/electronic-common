@@ -1,3 +1,6 @@
 [submodule "vendors/RF24"]
 	path = vendors/RF24
 	url = git@github.com:osteres/RF24.git
+[submodule "vendors/StandardCplusplus"]
+	path = vendors/StandardCplusplus
+	url = git@github.com:maniacbug/StandardCplusplus.git
