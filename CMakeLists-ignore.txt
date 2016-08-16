@@ -1,4 +1,4 @@
 
 # Sample
-#remove_path(FILES_CPP /sample/)
-#remove_path(FILES_H /sample/)
+#remove_path(${NAME}_FILES_CPP /sample/)
+#remove_path(${NAME}_FILES_H /sample/)

@@ -3,7 +3,6 @@
 //
 
 #include "Receiver.h"
-#include <cstdlib>
 
 #include <com/osteres/automation/transmission/packet/Packet.h>
 
