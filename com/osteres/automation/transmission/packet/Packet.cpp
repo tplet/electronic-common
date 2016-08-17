@@ -5,8 +5,6 @@
 #include "Packet.h"
 #include <com/osteres/util/IDGenerator.h>
 
-typedef uint8_t byte;
-
 using namespace com::osteres::automation::transmission::packet;
 namespace util = com::osteres::util;
 
@@ -21,7 +19,7 @@ Packet::Packet()
 /**
  * Constructor with sensor
  */
-Packet::Packet(byte sensor)
+Packet::Packet(unsigned char sensor)
 {
     this->construct(sensor, 0);
 }
@@ -29,7 +27,7 @@ Packet::Packet(byte sensor)
 /**
  * Constructor with sensor and packet id
  */
-Packet::Packet(byte sensor, byte id)
+Packet::Packet(unsigned char sensor, unsigned char id)
 {
     this->construct(sensor, id);
 }
@@ -45,7 +43,7 @@ Packet::~Packet()
 /**
  * Constructor
  */
-void Packet::construct(byte sensor, byte id)
+void Packet::construct(unsigned char sensor, unsigned char id)
 {
     this->resetData();
     this->sensor = sensor;
@@ -60,7 +58,7 @@ void Packet::construct(byte sensor, byte id)
 /**
  * Get identifier
  */
-byte Packet::getId()
+unsigned char Packet::getId()
 {
     return this->id;
 }
@@ -68,7 +66,7 @@ byte Packet::getId()
 /**
  * Set identifier
  */
-void Packet::setId(byte i)
+void Packet::setId(unsigned char i)
 {
     this->id = i;
 }
@@ -76,7 +74,7 @@ void Packet::setId(byte i)
 /**
  * Get sensor identifier
  */
-byte Packet::getSensor()
+unsigned char Packet::getSensor()
 {
     return this->sensor;
 }
@@ -84,7 +82,7 @@ byte Packet::getSensor()
 /**
  * Set sensor identifier
  */
-void Packet::setSensor(byte sensor)
+void Packet::setSensor(unsigned char sensor)
 {
     this->sensor = sensor;
 }
@@ -92,7 +90,7 @@ void Packet::setSensor(byte sensor)
 /**
  * Get command identifier
  */
-byte Packet::getCommand()
+unsigned char Packet::getCommand()
 {
     return this->command;
 }
@@ -100,7 +98,7 @@ byte Packet::getCommand()
 /**
  * Set command identifier
  */
-void Packet::setCommand(byte command)
+void Packet::setCommand(unsigned char command)
 {
     this->command = command;
 }
@@ -108,7 +106,7 @@ void Packet::setCommand(byte command)
 /**
  * Get target of request
  */
-byte Packet::getTarget()
+unsigned char Packet::getTarget()
 {
     return this->target;
 }
@@ -116,7 +114,7 @@ byte Packet::getTarget()
 /**
  * Set target of request
  */
-void Packet::setTarget(byte target)
+void Packet::setTarget(unsigned char target)
 {
     this->target = target;
 }
@@ -153,29 +151,29 @@ void Packet::setLast(bool last) {
     this->last = last;
 }
 
-byte Packet::getDataByte1()
-{ return this->dataByte1; }
+unsigned char Packet::getDataUChar1()
+{ return this->dataUChar1; }
 
-byte Packet::getDataByte2()
-{ return this->dataByte2; }
+unsigned char Packet::getDataUChar2()
+{ return this->dataUChar2; }
 
-byte Packet::getDataByte3()
-{ return this->dataByte3; }
+unsigned char Packet::getDataUChar3()
+{ return this->dataUChar3; }
 
-byte Packet::getDataByte4()
-{ return this->dataByte4; }
+unsigned char Packet::getDataUChar4()
+{ return this->dataUChar4; }
 
-void Packet::setDataByte1(byte data)
-{ this->dataByte1 = data; }
+void Packet::setDataUChar1(unsigned char data)
+{ this->dataUChar1 = data; }
 
-void Packet::setDataByte2(byte data)
-{ this->dataByte2 = data; }
+void Packet::setDataUChar2(unsigned char data)
+{ this->dataUChar2 = data; }
 
-void Packet::setDataByte3(byte data)
-{ this->dataByte3 = data; }
+void Packet::setDataUChar3(unsigned char data)
+{ this->dataUChar3 = data; }
 
-void Packet::setDataByte4(byte data)
-{ this->dataByte4 = data; }
+void Packet::setDataUChar4(unsigned char data)
+{ this->dataUChar4 = data; }
 
 long Packet::getDataLong1()
 { return this->dataLong1; }
@@ -232,11 +230,11 @@ void Packet::nextId()
  */
 void Packet::resetData()
 {
-    // Byte
-    this->setDataByte1(0);
-    this->setDataByte2(0);
-    this->setDataByte3(0);
-    this->setDataByte4(0);
+    // unsigned char
+    this->setDataUChar1(0);
+    this->setDataUChar2(0);
+    this->setDataUChar3(0);
+    this->setDataUChar4(0);
 
     // Long
     this->setDataLong1(0);

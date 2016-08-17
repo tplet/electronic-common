@@ -5,8 +5,6 @@
 #ifndef COM_OSTERES_UTIL_IDGENERATOR_H
 #define COM_OSTERES_UTIL_IDGENERATOR_H
 
-typedef unsigned char byte;
-
 namespace com
 {
     namespace osteres
@@ -22,7 +20,7 @@ namespace com
                  *
                  * Uniq identifier
                  */
-                static byte uniqId;
+                static unsigned char uniqId;
 
             public:
                 /**
@@ -30,7 +28,7 @@ namespace com
                  *
                  * Get next request identifier
                  */
-                static byte getNextId();
+                static unsigned char getNextId();
             };
         }
     }

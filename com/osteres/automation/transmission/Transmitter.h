@@ -5,17 +5,13 @@
 #ifndef COM_OSTERES_AUTOMATION_TRANSMISSION_TRANSMITTER_H
 #define COM_OSTERES_AUTOMATION_TRANSMISSION_TRANSMITTER_H
 
-#include <Arduino.h>
-#include "RF24/nRF24L01.h"
-#include <SPI.h>
 #include <RF24/RF24.h>
+#include "RF24/nRF24L01.h"
 #include <com/osteres/automation/transmission/packet/Packet.h>
 #include <com/osteres/automation/action/ActionManagerBase.h>
 #include <com/osteres/automation/transmission/Requester.h>
 #include <com/osteres/automation/transmission/Receiver.h>
 #include <com/osteres/automation/transmission/packet/Command.h>
-
-typedef uint8_t byte;
 
 using com::osteres::automation::transmission::packet::Packet;
 using com::osteres::automation::action::ActionManagerBase;
@@ -32,7 +28,7 @@ namespace com {
                     /**
                      * Constructor
                      */
-                    Transmitter(RF24 * radio, byte sensor, bool isMaster = false);
+                    Transmitter(RF24 * radio, unsigned char sensor, bool isMaster = false);
 
                     /**
                      * Destructor
@@ -52,10 +48,15 @@ namespace com {
                         //this->radio->enableDynamicPayloads();
 
                         // Prepare requester and receiver
-                        this->requester = new Requester(this->radio, this->getWritingChannel());
-                        this->receiver = new Receiver(this->radio, this->getReadingChannel(), this->sensor, getDefaultTTL());
+                        if (this->requester == NULL) {
+                            this->requester = new Requester(this->radio, this->getWritingChannel());
+                        }
+                        if (this->receiver == NULL) {
+                            this->receiver = new Receiver(this->radio, this->getReadingChannel(), this->sensor,
+                                                          getDefaultTTL());
+                        }
 
-                        Serial.println(F("Transmitter: Setup done."));
+                        //Serial.println(F("Transmitter: Setup done."));
                     }
 
                     /**
@@ -74,7 +75,7 @@ namespace com {
                      */
                     void listen()
                     {
-                        Serial.println(F("Transmitter: Listen packet..."));
+                        //Serial.println(F("Transmitter: Listen packet..."));
 
                         // Confirm packet
                         Packet * packetOk = new Packet(this->sensor);
@@ -92,7 +93,7 @@ namespace com {
 
                             // Send success receiving response
                             packetOk->setTarget(response->getSensor());
-                            packetOk->setDataByte1(response->getId());
+                            packetOk->setDataUChar1(response->getId());
                             packetOk->setDate(0);
                             this->getRequester()->send(packetOk);
 
@@ -108,9 +109,9 @@ namespace com {
                             this->getReceiver()->cleanResponse();
                         }
 
-                        Serial.print(F("Transmitter: Stop listening. "));
-                        Serial.print(i);
-                        Serial.println(F(" packet received and processed."));
+                        //Serial.print(F("Transmitter: Stop listening. "));
+                        //Serial.print(i);
+                        //Serial.println(F(" packet received and processed."));
 
                         // Free memory
                         if (packetOk != NULL) {
@@ -155,6 +156,20 @@ namespace com {
                     Receiver * getReceiver();
 
                     /**
+                     * Set requester object
+                     *
+                     * When you use this method, ensure that previous requester pointer has been removed!
+                     */
+                    void setRequester(Requester * requester);
+
+                    /**
+                     * Set receiver object
+                     *
+                     * When you use this method, ensure that previous requester pointer has been removed!
+                     */
+                    void setReceiver(Receiver * receiver);
+
+                    /**
                      * Get RF24 (radio)
                      */
                     RF24 * getRadio()
@@ -173,7 +188,7 @@ namespace com {
                     /**
                      * Set channel to read
                      */
-                    void setReadingChannel(uint64_t channel)
+                    void setReadingChannel(unsigned long long channel)
                     {
                         this->readingChannel = channel;
 
@@ -185,7 +200,7 @@ namespace com {
                     /**
                      * Set channel to write
                      */
-                    void setWritingChannel(uint64_t channel)
+                    void setWritingChannel(unsigned long long channel)
                     {
                         this->writingChannel = channel;
 
@@ -197,7 +212,7 @@ namespace com {
                     /**
                      * Get writing channel
                      */
-                    uint64_t getWritingChannel()
+                    unsigned long long getWritingChannel()
                     {
                         return this->writingChannel;
                     }
@@ -205,7 +220,7 @@ namespace com {
                     /**
                      * Get reading channel
                      */
-                    uint64_t getReadingChannel()
+                    unsigned long long getReadingChannel()
                     {
                         return this->readingChannel;
                     }
@@ -214,7 +229,7 @@ namespace com {
                     /**
                      * Constructor
                      */
-                    void construct(RF24 * radio, byte sensor, bool isMaster);
+                    void construct(RF24 * radio, unsigned char sensor, bool isMaster);
 
                     /**
                      * Default ttl
@@ -244,7 +259,7 @@ namespace com {
                     /**
                      * Sensor identifier
                      */
-                    byte sensor;
+                    unsigned char sensor;
 
                     /**
                      * Master flag
@@ -255,12 +270,12 @@ namespace com {
                     /**
                      * Channel to read
                      */
-                    uint64_t readingChannel;
+                    unsigned long long readingChannel;
 
                     /**
                      * Channel to write
                      */
-                    uint64_t writingChannel;
+                    unsigned long long writingChannel;
                 };
             }
         }

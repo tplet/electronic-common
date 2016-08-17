@@ -5,12 +5,11 @@
 #ifndef COM_OSTERES_AUTOMATION_TRANSMISSION_PACKET_COMMANDSTRING_H
 #define COM_OSTERES_AUTOMATION_TRANSMISSION_PACKET_COMMANDSTRING_H
 
-#include <Arduino.h>
+#include <string>
 #include <com/osteres/automation/transmission/packet/Command.h>
 
 using com::osteres::automation::transmission::packet::Command;
-
-typedef uint8_t byte;
+using namespace std;
 
 namespace com
 {
@@ -31,9 +30,9 @@ namespace com
                         /**
                          * Transpose command code to string representation
                          */
-                        static String toString(byte command)
+                        static string toString(unsigned char command)
                         {
-                            String s;
+                            string s;
                             switch (command) {
                                 case Command::OK:
                                     s = "OK";
@@ -61,9 +60,9 @@ namespace com
                         /**
                          * Transpose channel code to string representation
                          */
-                        static String toString(uint64_t channel)
+                        static string toString(unsigned long long channel)
                         {
-                            String s;
+                            string s;
                             switch (channel) {
                                 case Command::CHANNEL_MASTER:
                                     s = "CHANNEL_MASTER";

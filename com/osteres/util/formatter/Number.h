@@ -5,8 +5,11 @@
 #ifndef COM_OSTERES_UTIL_FORMATTER_NUMBER_H
 #define COM_OSTERES_UTIL_FORMATTER_NUMBER_H
 
-#include <Arduino.h>
-#include <string.h>
+#include <string>
+#include <sstream>
+
+using std::string;
+using std::stringstream;
 
 namespace com {
     namespace osteres {
@@ -17,10 +20,12 @@ namespace com {
                     /**
                      * Generate string from int value and add "0" prefix if value lower than 10
                      *
-                     * @param uint8_t value
+                     * @param unsigned char value
                      */
-                    static String twoDigit(uint8_t value) {
-                        return (value < 10 ? "0" : "") + String(value);
+                    static string twoDigit(unsigned char value) {
+                        stringstream ss;
+                        ss << (value < 10 ? "0" : "") << (int)value;
+                        return ss.str();
                     }
                 };
             }

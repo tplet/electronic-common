@@ -14,7 +14,7 @@ unsigned int Transmitter::defaultTtl = 1000;
 /**
  * Constructor
  */
-Transmitter::Transmitter(RF24 * radio, byte sensor, bool isMaster)
+Transmitter::Transmitter(RF24 * radio, unsigned char sensor, bool isMaster)
 {
     Transmitter::construct(radio, sensor, isMaster);
 }
@@ -38,15 +38,15 @@ Transmitter::~Transmitter()
 /**
  * Constructor
  */
-void Transmitter::construct(RF24 * radio, byte sensor, bool isMaster)
+void Transmitter::construct(RF24 * radio, unsigned char sensor, bool isMaster)
 {
     this->radio = radio;
     this->sensor = sensor;
     this->master = isMaster;
 
     // Channels
-    uint64_t writingChannel = Command::CHANNEL_SLAVE;
-    uint64_t readingChannel = Command::CHANNEL_MASTER;
+    unsigned long long writingChannel = Command::CHANNEL_SLAVE;
+    unsigned long long readingChannel = Command::CHANNEL_MASTER;
     if (this->isMaster()) {
         writingChannel = Command::CHANNEL_MASTER;
         readingChannel = Command::CHANNEL_SLAVE;
@@ -92,4 +92,20 @@ Requester * Transmitter::getRequester() {
  */
 Receiver * Transmitter::getReceiver() {
     return this->receiver;
+}
+
+/**
+ * Set requester
+ */
+void Transmitter::setRequester(Requester * requester)
+{
+    this->requester = requester;
+}
+
+/**
+ * Set receiver
+ */
+void Transmitter::setReceiver(Receiver * receiver)
+{
+    this->receiver = receiver;
 }
