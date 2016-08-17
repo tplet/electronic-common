@@ -48,8 +48,13 @@ namespace com {
                         //this->radio->enableDynamicPayloads();
 
                         // Prepare requester and receiver
-                        this->requester = new Requester(this->radio, this->getWritingChannel());
-                        this->receiver = new Receiver(this->radio, this->getReadingChannel(), this->sensor, getDefaultTTL());
+                        if (this->requester == NULL) {
+                            this->requester = new Requester(this->radio, this->getWritingChannel());
+                        }
+                        if (this->receiver == NULL) {
+                            this->receiver = new Receiver(this->radio, this->getReadingChannel(), this->sensor,
+                                                          getDefaultTTL());
+                        }
 
                         //Serial.println(F("Transmitter: Setup done."));
                     }
@@ -149,6 +154,20 @@ namespace com {
                      * Get receiver object
                      */
                     Receiver * getReceiver();
+
+                    /**
+                     * Set requester object
+                     *
+                     * When you use this method, ensure that previous requester pointer has been removed!
+                     */
+                    void setRequester(Requester * requester);
+
+                    /**
+                     * Set receiver object
+                     *
+                     * When you use this method, ensure that previous requester pointer has been removed!
+                     */
+                    void setReceiver(Receiver * receiver);
 
                     /**
                      * Get RF24 (radio)

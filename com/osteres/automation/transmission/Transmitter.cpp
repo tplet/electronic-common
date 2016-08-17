@@ -93,3 +93,19 @@ Requester * Transmitter::getRequester() {
 Receiver * Transmitter::getReceiver() {
     return this->receiver;
 }
+
+/**
+ * Set requester
+ */
+void Transmitter::setRequester(Requester * requester)
+{
+    this->requester = requester;
+}
+
+/**
+ * Set receiver
+ */
+void Transmitter::setReceiver(Receiver * receiver)
+{
+    this->receiver = receiver;
+}

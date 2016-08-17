@@ -12,11 +12,15 @@ include(CMakeLists-ignore.txt)
 
 if (ARDUINO_FOUND)
     ## Dependencies
-    # RF24
+    # RF24 (library)
     include_directories(./vendors/RF24)
     add_subdirectory(./vendors/RF24)
-    list(APPEND ${NAME}_FILES_CPP ${RF24_FILES_CPP})
-    list(APPEND ${NAME}_FILES_H ${RF24_FILES_H})
+    # StandardCplusplus (add source file to library)
+    include_directories(./vendors/StandardCplusplus)
+    file(GLOB_RECURSE StandardCplusplus_FILES_CPP "vendors/StandardCplusplus/*.cpp")
+    file(GLOB_RECURSE StandardCplusplus_FILES_H "vendors/StandardCplusplus/*.h")
+    list(APPEND ${NAME}_FILES_CPP ${StandardCplusplus_FILES_CPP})
+    list(APPEND ${NAME}_FILES_H ${StandardCplusplus_FILES_H})
 
     # Declare arduino library
     generate_arduino_library(
@@ -24,8 +28,13 @@ if (ARDUINO_FOUND)
         SRCS ${${NAME}_FILES_CPP}
         HDRS ${${NAME}_FILES_H}
         BOARD ${BOARD}
-        #ARDLIBS SPI
+        ARDLIBS SPI
+        LIBS RF24
+#        NO_AUTOLIBS
     )
+
+    # StandardCplusplus (add root path of this library to include path)
+    target_include_directories(${NAME} PUBLIC ./vendors/StandardCplusplus)
 
 else()
 
