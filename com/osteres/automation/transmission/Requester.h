@@ -5,7 +5,7 @@
 #ifndef COM_OSTERES_AUTOMATION_TRANSMISSION_REQUESTER_H
 #define COM_OSTERES_AUTOMATION_TRANSMISSION_REQUESTER_H
 
-#include <RF24/RF24.h>
+#include <com/osteres/automation/proxy/RF24.h>
 #include <com/osteres/automation/transmission/packet/Packet.h>
 #include <com/osteres/automation/transmission/Receiver.h>
 

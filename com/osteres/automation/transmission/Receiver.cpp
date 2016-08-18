@@ -3,17 +3,13 @@
 //
 
 #include "Receiver.h"
-
-#include <com/osteres/automation/transmission/packet/Packet.h>
+#include <com/osteres/automation/polyfill/millis.h>
 
 using namespace com::osteres::automation::transmission;
-
-using com::osteres::automation::transmission::packet::Packet;
-
 /**
  * Constructor
  */
-Receiver::Receiver(RF24 * radio, unsigned long long readingChannel, unsigned char sensor, unsigned int timeout) {
+Receiver::Receiver(RF24 * radio, unsigned long long readingChannel, unsigned char sensor, unsigned int timeout = 1000) {
     this->radio = radio;
     this->setReadingChannel(readingChannel);
     this->sensor = sensor;

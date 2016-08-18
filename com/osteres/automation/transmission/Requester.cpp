@@ -5,6 +5,7 @@
 #include "Requester.h"
 #include <com/osteres/util/IDGenerator.h>
 #include <com/osteres/automation/transmission/packet/Command.h>
+#include <com/osteres/automation/polyfill/delay.h>
 
 using com::osteres::util::IDGenerator;
 using com::osteres::automation::transmission::packet::Command;
