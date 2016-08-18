@@ -1,4 +1,5 @@
 cmake_minimum_required(VERSION 3.3)
+include(./cmake/functions.txt)
 
 # Library name
 set(NAME common)
@@ -8,7 +9,7 @@ file(GLOB_RECURSE ${NAME}_FILES_CPP "com/*.cpp")
 file(GLOB_RECURSE ${NAME}_FILES_H "com/*.h")
 
 # Ignores some paths
-include(CMakeLists-ignore.txt)
+include(./cmake/ignore.txt)
 
 if (ARDUINO_FOUND)
     ## Dependencies
@@ -50,12 +51,19 @@ else()
     # RF24
     #add_subdirectory(./vendors/RF24/)
     #target_link_libraries(${NAME} RF24)
-    # RF24 (external: must be installed before)
-    target_link_libraries(${NAME} rf24-bcm)
+
+    # RF24
+    if (${RF24_MOCK})
+        # Use mock
+        target_compile_definitions(${EXECUTABLE} PUBLIC -DRF24_MOCK)
+        target_compile_definitions(${NAME} PUBLIC -DRF24_MOCK)
+    else()
+        # As external: must be installed before
+        target_link_libraries(${NAME} rf24-bcm)
+    endif()
 endif()
 
 # Permit to include files (similar as defining ./ directory to include path)
 target_include_directories(${NAME} PUBLIC .)
 # Permit to include vendors files (similar as defining ./ directory to include path)
 target_include_directories(${NAME} PUBLIC ./vendors)
-

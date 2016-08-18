@@ -1,0 +1,3 @@
+
+# Enable RF24 mock
+set(RF24_MOCK False)
