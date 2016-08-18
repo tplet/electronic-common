@@ -6,7 +6,7 @@
 #define COM_OSTERES_AUTOMATION_POLYFILL_MILLIS_H
 
 // Substitute for millis() method
-#ifndef ARDUINO
+#if (!defined(delay))
 
     #include <unistd.h>
     inline void delay( unsigned long ms )
