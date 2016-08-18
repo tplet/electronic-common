@@ -37,6 +37,13 @@ namespace com
                      * @used by Gas meter reader
                      */
                     static unsigned char const HALL = 0x02;
+                    /**
+                     * Weather sensor
+                     * Read ambiant temperature and humidity
+                     *
+                     * @used by Weather sensor
+                     */
+                    static unsigned char const WEATHER = 0x03;
                 };
             }
         }
