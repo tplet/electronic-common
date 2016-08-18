@@ -6,7 +6,7 @@
 #define COM_OSTERES_AUTOMATION_POLYFILL_MILLIS_H
 
 // Substitute for millis() method
-#if (!defined(millis))
+#if (!defined(ARDUINO) && !defined(millis))
 
     #include <ctime>
     unsigned long millis()
