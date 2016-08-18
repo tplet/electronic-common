@@ -5,6 +5,8 @@
 #ifndef COM_OSTERES_AUTOMATION_TRANSMISSION_PACKET_PACKET_H
 #define COM_OSTERES_AUTOMATION_TRANSMISSION_PACKET_PACKET_H
 
+#include <inttypes.h>
+
 namespace com
 {
     namespace osteres
@@ -25,12 +27,12 @@ namespace com
                         /**
                          * Constructor with sensor
                          */
-                        Packet(unsigned char sensor);
+                        Packet(uint8_t sensor);
 
                         /**
                          * Constructor with sensor and id
                          */
-                        Packet(unsigned char sensor, unsigned char id);
+                        Packet(uint8_t sensor, uint8_t id);
 
                         /**
                          * Destructor
@@ -40,12 +42,12 @@ namespace com
                         /**
                          * Get request identifier
                          */
-                        unsigned char getId();
+                        uint8_t getId();
 
                         /**
                          * Set request identifier
                          */
-                        void setId(unsigned char id);
+                        void setId(uint8_t id);
 
                         /**
                          * Set request identifier to next value
@@ -55,42 +57,42 @@ namespace com
                         /**
                          * Get sensor identifier
                          */
-                        unsigned char getSensor();
+                        uint8_t getSensor();
 
                         /**
                          * Set sensor identifier
                          */
-                        void setSensor(unsigned char sensor);
+                        void setSensor(uint8_t sensor);
 
                         /**
                          * Get command identifier
                          */
-                        unsigned char getCommand();
+                        uint8_t getCommand();
 
                         /**
                          * Set command identifier
                          */
-                        void setCommand(unsigned char command);
+                        void setCommand(uint8_t command);
 
                         /**
                          * Get target of request
                          */
-                        unsigned char getTarget();
+                        uint8_t getTarget();
 
                         /**
                          * Set target of request
                          */
-                        void setTarget(unsigned char target);
+                        void setTarget(uint8_t target);
 
                         /**
                          * Get timestamp associated to data
                          */
-                        unsigned long int getDate();
+                        uint32_t getDate();
 
                         /**
                          * Set timestamp associated to data
                          */
-                        void setDate(unsigned long int date);
+                        void setDate(uint32_t date);
 
                         /**
                          * Flag to indicate that packet is the last.
@@ -109,98 +111,62 @@ namespace com
                          */
                         void resetData();
 
-                        unsigned char getDataUChar1();
+                        uint8_t getDataUChar1();
 
-                        unsigned char getDataUChar2();
+                        uint8_t getDataUChar2();
 
-                        unsigned char getDataUChar3();
+                        uint8_t getDataUChar3();
 
-                        unsigned char getDataUChar4();
+                        uint8_t getDataUChar4();
 
-                        void setDataUChar1(unsigned char data);
+                        void setDataUChar1(uint8_t data);
 
-                        void setDataUChar2(unsigned char data);
+                        void setDataUChar2(uint8_t data);
 
-                        void setDataUChar3(unsigned char data);
+                        void setDataUChar3(uint8_t data);
 
-                        void setDataUChar4(unsigned char data);
+                        void setDataUChar4(uint8_t data);
 
-                        long getDataLong1();
+                        int32_t getDataLong1();
 
-                        long getDataLong2();
+                        int32_t getDataLong2();
 
-                        long getDataLong3();
+                        int32_t getDataLong3();
 
-                        long getDataLong4();
+                        int32_t getDataLong4();
 
-                        void setDataLong1(long data);
+                        void setDataLong1(int32_t data);
 
-                        void setDataLong2(long data);
+                        void setDataLong2(int32_t data);
 
-                        void setDataLong3(long data);
+                        void setDataLong3(int32_t data);
 
-                        void setDataLong4(long data);
+                        void setDataLong4(int32_t data);
 
-                        char getDataChar1();
+                        int8_t getDataChar1();
 
-                        char getDataChar2();
+                        int8_t getDataChar2();
 
-                        char getDataChar3();
+                        int8_t getDataChar3();
 
-                        void setDataChar1(char data);
+                        void setDataChar1(int8_t data);
 
-                        void setDataChar2(char data);
+                        void setDataChar2(int8_t data);
 
-                        void setDataChar3(char data);
+                        void setDataChar3(int8_t data);
 
                     protected:
                         /**
                          * Constructor
                          */
-                        void construct(unsigned char sensor, unsigned char id);
-
-                        /**
-                         * Packet identifier (uniq for each running sensor)
-                         *
-                         * 1 byte
-                         */
-                        unsigned char id;
-
-                        /**
-                         * Sensor identifier (uniq for all automation park)
-                         *
-                         * 1 byte
-                         */
-                        unsigned char sensor;
-
-                        /**
-                         * Command identifier
-                         *
-                         * 1 byte
-                         */
-                        unsigned char command;
-
-                        /**
-                         * Target of request
-                         *
-                         * 1 byte
-                         */
-                        unsigned char target;
-
-                        /**
-                         * Flag to indicate that packet is the last.
-                         * It's mean that there is no packet to receive after this one (source queue empty)
-                         *
-                         * 1 byte
-                         */
-                        bool last = true;
+                        void construct(uint8_t sensor, uint8_t id);
 
                         /**
                          * Timestamp associated to data
                          *
-                         * 4 byte
+                         * 4 bytes
                          */
-                        unsigned long int date;
+                        uint32_t date;
 
                         /**
                          * Containers
@@ -211,34 +177,72 @@ namespace com
                          * Raspbberry unknow: When 30 bytes declared, sizeof(request) equal to 32... Work with step ?
                          *                   (4, 8, 16, 32 ?)
                          *                   To fix, ensure that exactly one of these step defined
+                         *
+                         * Size of class also depend of property order!
+                         * In this case, all '4 bytes' properties are declared in first, then the small properties
+                         * (all the properties use 1 byte in this case)
                          */
-
-                        /**
-                         * Data byte containers
-                         * 4 x 1 byte = 4 bytes
-                         */
-                        unsigned char dataUChar1;
-                        unsigned char dataUChar2;
-                        unsigned char dataUChar3;
-                        unsigned char dataUChar4;
 
                         /**
                          * Data long containers
                          * 4 x 4 bytes = 16 bytes
                          */
-                        long dataLong1;
-                        long dataLong2;
-                        long dataLong3;
-                        long dataLong4;
+                        int32_t dataLong1;
+                        int32_t dataLong2;
+                        int32_t dataLong3;
+                        int32_t dataLong4;
 
                         /**
-                         * Data chart containers
+                         * Data byte containers
+                         * 4 x 1 byte = 4 bytes
+                         */
+                        uint8_t dataUChar1;
+                        uint8_t dataUChar2;
+                        uint8_t dataUChar3;
+                        uint8_t dataUChar4;
+
+                        /**
+                         * Data char containers
                          * 3 x 1 byte = 3 bytes
                          */
-                        char dataChart1;
-                        char dataChart2;
-                        char dataChart3;
+                        int8_t dataChart1;
+                        int8_t dataChart2;
+                        int8_t dataChart3;
+                        /**
+                         * Packet identifier (uniq for each running sensor)
+                         *
+                         * 1 byte
+                         */
+                        uint8_t id;
 
+                        /**
+                         * Sensor identifier (uniq for all automation park)
+                         *
+                         * 1 byte
+                         */
+                        uint8_t sensor;
+
+                        /**
+                         * Command identifier
+                         *
+                         * 1 byte
+                         */
+                        uint8_t command;
+
+                        /**
+                         * Target of request
+                         *
+                         * 1 byte
+                         */
+                        uint8_t target;
+
+                        /**
+                         * Flag to indicate that packet is the last.
+                         * It's mean that there is no packet to receive after this one (source queue empty)
+                         *
+                         * 1 byte
+                         */
+                        bool last = true;
                     };
                 }
             }

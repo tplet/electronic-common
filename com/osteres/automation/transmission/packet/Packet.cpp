@@ -1,7 +1,6 @@
 //
 // Created by Thibault PLET <thibault.plet@gmail.com> on 01/04/2016.
 //
-#include <stdint.h>
 #include "Packet.h"
 #include <com/osteres/util/IDGenerator.h>
 
@@ -19,7 +18,7 @@ Packet::Packet()
 /**
  * Constructor with sensor
  */
-Packet::Packet(unsigned char sensor)
+Packet::Packet(uint8_t sensor)
 {
     this->construct(sensor, 0);
 }
@@ -27,7 +26,7 @@ Packet::Packet(unsigned char sensor)
 /**
  * Constructor with sensor and packet id
  */
-Packet::Packet(unsigned char sensor, unsigned char id)
+Packet::Packet(uint8_t sensor, uint8_t id)
 {
     this->construct(sensor, id);
 }
@@ -43,7 +42,7 @@ Packet::~Packet()
 /**
  * Constructor
  */
-void Packet::construct(unsigned char sensor, unsigned char id)
+void Packet::construct(uint8_t sensor, uint8_t id)
 {
     this->resetData();
     this->sensor = sensor;
@@ -58,7 +57,7 @@ void Packet::construct(unsigned char sensor, unsigned char id)
 /**
  * Get identifier
  */
-unsigned char Packet::getId()
+uint8_t Packet::getId()
 {
     return this->id;
 }
@@ -66,7 +65,7 @@ unsigned char Packet::getId()
 /**
  * Set identifier
  */
-void Packet::setId(unsigned char i)
+void Packet::setId(uint8_t i)
 {
     this->id = i;
 }
@@ -74,7 +73,7 @@ void Packet::setId(unsigned char i)
 /**
  * Get sensor identifier
  */
-unsigned char Packet::getSensor()
+uint8_t Packet::getSensor()
 {
     return this->sensor;
 }
@@ -82,7 +81,7 @@ unsigned char Packet::getSensor()
 /**
  * Set sensor identifier
  */
-void Packet::setSensor(unsigned char sensor)
+void Packet::setSensor(uint8_t sensor)
 {
     this->sensor = sensor;
 }
@@ -90,7 +89,7 @@ void Packet::setSensor(unsigned char sensor)
 /**
  * Get command identifier
  */
-unsigned char Packet::getCommand()
+uint8_t Packet::getCommand()
 {
     return this->command;
 }
@@ -98,7 +97,7 @@ unsigned char Packet::getCommand()
 /**
  * Set command identifier
  */
-void Packet::setCommand(unsigned char command)
+void Packet::setCommand(uint8_t command)
 {
     this->command = command;
 }
@@ -106,7 +105,7 @@ void Packet::setCommand(unsigned char command)
 /**
  * Get target of request
  */
-unsigned char Packet::getTarget()
+uint8_t Packet::getTarget()
 {
     return this->target;
 }
@@ -114,7 +113,7 @@ unsigned char Packet::getTarget()
 /**
  * Set target of request
  */
-void Packet::setTarget(unsigned char target)
+void Packet::setTarget(uint8_t target)
 {
     this->target = target;
 }
@@ -122,7 +121,7 @@ void Packet::setTarget(unsigned char target)
 /**
  * Get timestamp associated to data
  */
-unsigned long int Packet::getDate()
+uint32_t Packet::getDate()
 {
     return this->date;
 }
@@ -130,7 +129,7 @@ unsigned long int Packet::getDate()
 /**
  * Set timestamp associated to data
  */
-void Packet::setDate(unsigned long int date)
+void Packet::setDate(uint32_t date)
 {
     this->date = date;
 }
@@ -151,70 +150,70 @@ void Packet::setLast(bool last) {
     this->last = last;
 }
 
-unsigned char Packet::getDataUChar1()
+uint8_t Packet::getDataUChar1()
 { return this->dataUChar1; }
 
-unsigned char Packet::getDataUChar2()
+uint8_t Packet::getDataUChar2()
 { return this->dataUChar2; }
 
-unsigned char Packet::getDataUChar3()
+uint8_t Packet::getDataUChar3()
 { return this->dataUChar3; }
 
-unsigned char Packet::getDataUChar4()
+uint8_t Packet::getDataUChar4()
 { return this->dataUChar4; }
 
-void Packet::setDataUChar1(unsigned char data)
+void Packet::setDataUChar1(uint8_t data)
 { this->dataUChar1 = data; }
 
-void Packet::setDataUChar2(unsigned char data)
+void Packet::setDataUChar2(uint8_t data)
 { this->dataUChar2 = data; }
 
-void Packet::setDataUChar3(unsigned char data)
+void Packet::setDataUChar3(uint8_t data)
 { this->dataUChar3 = data; }
 
-void Packet::setDataUChar4(unsigned char data)
+void Packet::setDataUChar4(uint8_t data)
 { this->dataUChar4 = data; }
 
-long Packet::getDataLong1()
+int32_t Packet::getDataLong1()
 { return this->dataLong1; }
 
-long Packet::getDataLong2()
+int32_t Packet::getDataLong2()
 { return this->dataLong2; }
 
-long Packet::getDataLong3()
+int32_t Packet::getDataLong3()
 { return this->dataLong3; }
 
-long Packet::getDataLong4()
+int32_t Packet::getDataLong4()
 { return this->dataLong4; }
 
-void Packet::setDataLong1(long data)
+void Packet::setDataLong1(int32_t data)
 { this->dataLong1 = data; }
 
-void Packet::setDataLong2(long data)
+void Packet::setDataLong2(int32_t data)
 { this->dataLong2 = data; }
 
-void Packet::setDataLong3(long data)
+void Packet::setDataLong3(int32_t data)
 { this->dataLong3 = data; }
 
-void Packet::setDataLong4(long data)
+void Packet::setDataLong4(int32_t data)
 { this->dataLong4 = data; }
 
-char Packet::getDataChar1()
+int8_t Packet::getDataChar1()
 { return this->dataChart1; }
 
-char Packet::getDataChar2()
+int8_t Packet::getDataChar2()
 { return this->dataChart2; }
 
-char Packet::getDataChar3()
+int8_t Packet::getDataChar3()
 { return this->dataChart3; }
 
-void Packet::setDataChar1(char data)
+void Packet::setDataChar1(int8_t data)
 { this->dataChart1 = data; }
 
-void Packet::setDataChar2(char data)
+void Packet::setDataChar2(int8_t data)
 { this->dataChart2 = data; }
 
-void Packet::setDataChar3(char data)
+void Packet::setDataChar3(int8_t data)
 { this->dataChart3 = data; }
 
 /**
@@ -236,13 +235,13 @@ void Packet::resetData()
     this->setDataUChar3(0);
     this->setDataUChar4(0);
 
-    // Long
+    // long
     this->setDataLong1(0);
     this->setDataLong2(0);
     this->setDataLong3(0);
     this->setDataLong4(0);
 
-    // Char
+    // char
     this->setDataChar1(0);
     this->setDataChar2(0);
     this->setDataChar3(0);
