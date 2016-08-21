@@ -28,6 +28,7 @@ namespace com
                          * Execute action
                          *
                          * Output packet to console
+                         * (not works on arduino)
                          */
                         bool execute(Packet * packet)
                         {
