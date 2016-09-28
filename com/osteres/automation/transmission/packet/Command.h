@@ -49,6 +49,14 @@ namespace com
                          * Init phase (depend on main role of each sensor)
                          */
                         static unsigned char const INIT = 0x05;
+                        /**
+                         * Request to obtain a sensor identifier
+                         */
+                        static unsigned char const IDENTIFIER_REQUEST = 0x06;
+                        /**
+                         * Response contains a sensor identifier
+                         */
+                        static unsigned char const IDENTIFIER_RESPONSE = 0x07;
                     };
                 }
             }
