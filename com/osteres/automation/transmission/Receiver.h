@@ -8,8 +8,10 @@
 #include <cstddef>
 #include <com/osteres/automation/proxy/RF24.h>
 #include <com/osteres/automation/transmission/packet/Packet.h>
+#include <com/osteres/automation/memory/Property.h>
 
 using com::osteres::automation::transmission::packet::Packet;
+using com::osteres::automation::memory::Property;
 
 namespace com
 {
@@ -24,7 +26,7 @@ namespace com
                     /**
                      * Constructor
                      */
-                    Receiver(RF24 * radio, unsigned long long readingChannel, unsigned char sensor, unsigned int timeout);
+                    Receiver(RF24 * radio, unsigned long long readingChannel, unsigned int timeout);
 
                     /**
                      * Destructor
@@ -66,6 +68,26 @@ namespace com
                      */
                     void setReadingChannel(unsigned long long readingChannel);
 
+                    /**
+                     * Set sensor type identifier property
+                     */
+                    void setPropertySensorType(Property<unsigned char> * property);
+
+                    /**
+                     * Flag to indicate if sensor type identifier property has been defined
+                     */
+                    bool hasPropertySensorType();
+
+                    /**
+                     * Set sensor type property
+                     */
+                    void setPropertySensorIdentifier(Property<unsigned char> * property);
+
+                    /**
+                     * Flag to indicate if sensor identifier property has been defined
+                     */
+                    bool hasPropertySensorIdentifier();
+
                 protected:
                     /**
                      * Radio used for transmission
@@ -76,6 +98,16 @@ namespace com
                      * Response packet
                      */
                     Packet * response = NULL;
+
+                    /**
+                     * Sensor type identifier property
+                     */
+                    Property<unsigned char> * propertySensorType = NULL;
+
+                    /**
+                     * Sensor identifier property
+                     */
+                    Property<unsigned char> * propertySensorIdentifier = NULL;
 
                     /**
                      * Sensor target which can receive packet

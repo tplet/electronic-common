@@ -9,7 +9,7 @@ using namespace com::osteres::automation::transmission;
 /**
  * Constructor
  */
-Receiver::Receiver(RF24 * radio, unsigned long long readingChannel, unsigned char sensor, unsigned int timeout = 1000) {
+Receiver::Receiver(RF24 * radio, unsigned long long readingChannel, unsigned int timeout = 1000) {
     this->radio = radio;
     this->setReadingChannel(readingChannel);
     this->sensor = sensor;
@@ -77,7 +77,7 @@ bool Receiver::listen() {
 
             // Check if packet are right destined to this (false positive),
             // if not, try again until packet received is for this sensor (can take a long time if many packet exchanged)
-            if (response != NULL && response->getTarget() != this->sensor) {
+            if (response != NULL && this->hasPropertySensorType() && response->getTarget() != this->propertySensorType->get()) {
                 delete response;
                 response = NULL;
                 // Then, listen again response
@@ -133,4 +133,36 @@ unsigned int Receiver::getTimeout()
 void Receiver::setReadingChannel(unsigned long long readingChannel)
 {
     this->readingChannel = readingChannel;
+}
+
+/**
+ * Set sensor type identifier property
+ */
+void Receiver::setPropertySensorType(Property<unsigned char> * property)
+{
+    this->propertySensorType = property;
+}
+
+/**
+ * Flag to indicate if sensor type identifier propery has been defined
+ */
+bool Receiver::hasPropertySensorType()
+{
+    return this->propertySensorType != NULL;
+}
+
+/**
+ * Set sensor identifier property
+ */
+void Receiver::setPropertySensorIdentifier(Property<unsigned char> * property)
+{
+    this->propertySensorIdentifier = property;
+}
+
+/**
+ * Flag to indicate if sensor identifier propery has been defined
+ */
+bool Receiver::hasPropertySensorIdentifier()
+{
+    return this->propertySensorIdentifier != NULL;
 }

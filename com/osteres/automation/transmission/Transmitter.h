@@ -12,23 +12,29 @@
 #include <com/osteres/automation/transmission/Requester.h>
 #include <com/osteres/automation/transmission/Receiver.h>
 #include <com/osteres/automation/transmission/packet/Command.h>
+#include <com/osteres/automation/memory/Property.h>
 
 using com::osteres::automation::transmission::packet::Packet;
 using com::osteres::automation::action::ActionManagerBase;
 using com::osteres::automation::transmission::Requester;
 using com::osteres::automation::transmission::Receiver;
 using com::osteres::automation::transmission::packet::Command;
+using com::osteres::automation::memory::Property;
 
-namespace com {
-    namespace osteres {
-        namespace automation {
-            namespace transmission {
+namespace com
+{
+    namespace osteres
+    {
+        namespace automation
+        {
+            namespace transmission
+            {
                 class Transmitter {
                 public:
                     /**
                      * Constructor
                      */
-                    Transmitter(RF24 * radio, unsigned char sensor, bool isMaster = false);
+                    Transmitter(RF24 * radio, bool isMaster = false);
 
                     /**
                      * Destructor
@@ -52,8 +58,13 @@ namespace com {
                             this->requester = new Requester(this->radio, this->getWritingChannel());
                         }
                         if (this->receiver == NULL) {
-                            this->receiver = new Receiver(this->radio, this->getReadingChannel(), this->sensor,
-                                                          getDefaultTTL());
+                            this->receiver = new Receiver(this->radio, this->getReadingChannel(), getDefaultTTL());
+                            if (this->hasPropertySensorType()) {
+                                this->receiver->setPropertySensorType(this->propertySensorType);
+                            }
+                            if (this->hasPropertySensorIdentifier()) {
+                                this->receiver->setPropertySensorIdentifier(this->propertySensorIdentifier);
+                            }
                         }
 
                         //Serial.println(F("Transmitter: Setup done."));
@@ -72,13 +83,15 @@ namespace com {
 
                     /**
                      * Listen packets and if receive, forward to action manager for process
+                     *
+                     * @return bool True if packet received during listen process
                      */
-                    void listen()
+                    bool listen()
                     {
                         //Serial.println(F("Transmitter: Listen packet..."));
 
                         // Confirm packet
-                        Packet * packetOk = new Packet(this->sensor);
+                        Packet * packetOk = new Packet();
                         packetOk->setCommand(Command::OK);
 
                         Packet * response = NULL;
@@ -92,7 +105,7 @@ namespace com {
                             response = this->getReceiver()->getResponse();
 
                             // Send success receiving response
-                            packetOk->setTarget(response->getSensor());
+                            packetOk->setTarget(response->getSourceIdentifier());
                             packetOk->setDataUChar1(response->getId());
                             packetOk->setDate(0);
                             this->getRequester()->send(packetOk);
@@ -120,6 +133,8 @@ namespace com {
                         }
                         // Clean response (no more used)
                         this->getReceiver()->cleanResponse();
+
+                        return i > 0;
                     }
 
                     /**
@@ -154,6 +169,11 @@ namespace com {
                      * Get receiver object
                      */
                     Receiver * getReceiver();
+
+                    /**
+                     * Flag to indicate if receiver defined
+                     */
+                    bool hasReceiver();
 
                     /**
                      * Set requester object
@@ -225,11 +245,53 @@ namespace com {
                         return this->readingChannel;
                     }
 
+                    /**
+                     * Set sensor type identifier property
+                     */
+                    void setPropertySensorType(Property<unsigned char> * property)
+                    {
+                        this->propertySensorType = property;
+
+                        // Forward to receiver if defined
+                        if (this->hasReceiver()) {
+                            this->getReceiver()->setPropertySensorType(this->propertySensorType);
+                        }
+                    }
+
+                    /**
+                     * Set sensor identifier property
+                     */
+                    void setPropertySensorIdentifier(Property<unsigned char> * property)
+                    {
+                        this->propertySensorIdentifier = property;
+
+                        // Forward to receiver if defined
+                        if (this->hasReceiver()) {
+                            this->getReceiver()->setPropertySensorIdentifier(this->propertySensorIdentifier);
+                        }
+                    }
+
+                    /**
+                     * Flag to indicate if sensor type identifier property is defined
+                     */
+                    bool hasPropertySensorType()
+                    {
+                        return this->propertySensorType != NULL;
+                    }
+
+                    /**
+                     * Flag to indicate if sensor identifier property is defined
+                     */
+                    bool hasPropertySensorIdentifier()
+                    {
+                        return this->propertySensorIdentifier != NULL;
+                    }
+
                 protected:
                     /**
                      * Constructor
                      */
-                    void construct(RF24 * radio, unsigned char sensor, bool isMaster);
+                    void construct(RF24 * radio, bool isMaster);
 
                     /**
                      * Default ttl
@@ -257,9 +319,14 @@ namespace com {
                     RF24 * radio = NULL;
 
                     /**
-                     * Sensor identifier
+                     * Sensor type identifier property
                      */
-                    unsigned char sensor;
+                    Property<unsigned char> * propertySensorType = NULL;
+
+                    /**
+                     * Sensor identifier property
+                     */
+                    Property<unsigned char> * propertySensorIdentifier = NULL;
 
                     /**
                      * Master flag
