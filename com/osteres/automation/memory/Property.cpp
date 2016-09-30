@@ -2,7 +2,7 @@
 // Created by Thibault PLET on 28/05/2016.
 //
 
-#include "ValueBase.h"
+#include "Property.h"
 
 using namespace com::osteres::automation::memory;
 
