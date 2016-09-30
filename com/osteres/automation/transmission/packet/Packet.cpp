@@ -16,19 +16,19 @@ Packet::Packet()
 }
 
 /**
- * Constructor with sensor
+ * Constructor with sensor type
  */
-Packet::Packet(uint8_t sensor)
+Packet::Packet(uint8_t sourceType)
 {
-    this->construct(sensor, 0);
+    this->construct(sourceType, 0);
 }
 
 /**
- * Constructor with sensor and packet id
+ * Constructor with sensor type and packet id
  */
-Packet::Packet(uint8_t sensor, uint8_t id)
+Packet::Packet(uint8_t sourceType, uint8_t id)
 {
-    this->construct(sensor, id);
+    this->construct(sourceType, id);
 }
 
 /**
@@ -42,10 +42,12 @@ Packet::~Packet()
 /**
  * Constructor
  */
-void Packet::construct(uint8_t sensor, uint8_t id)
+void Packet::construct(uint8_t sourceType, uint8_t id)
 {
     this->resetData();
-    this->sensor = sensor;
+    this->sourceType = sourceType;
+    // Sensor identifier defined optionaly in second time
+    this->sourceIdentifier = 0;
     this->id = id;
     this->date = 0;
     this->target = 0;
@@ -71,19 +73,35 @@ void Packet::setId(uint8_t i)
 }
 
 /**
- * Get sensor identifier
+ * Get sensor type identifier
  */
-uint8_t Packet::getSensor()
+uint8_t Packet::getSourceType()
 {
-    return this->sensor;
+    return this->sourceType;
 }
 
 /**
- * Set sensor identifier
+ * Set sensor type identifier
  */
-void Packet::setSensor(uint8_t sensor)
+void Packet::setSourceType(uint8_t type)
 {
-    this->sensor = sensor;
+    this->sourceType = type;
+}
+
+/**
+ * Get sensor identifier (uniq for all automation park)
+ */
+uint8_t Packet::getSourceIdentifier()
+{
+    return this->sourceIdentifier;
+}
+
+/**
+ * Set sensor identifier (uniq for all automation park)
+ */
+void Packet::setSourceIdentifier(uint8_t identifier)
+{
+    this->sourceIdentifier = identifier;
 }
 
 /**
@@ -159,9 +177,6 @@ uint8_t Packet::getDataUChar2()
 uint8_t Packet::getDataUChar3()
 { return this->dataUChar3; }
 
-uint8_t Packet::getDataUChar4()
-{ return this->dataUChar4; }
-
 void Packet::setDataUChar1(uint8_t data)
 { this->dataUChar1 = data; }
 
@@ -170,9 +185,6 @@ void Packet::setDataUChar2(uint8_t data)
 
 void Packet::setDataUChar3(uint8_t data)
 { this->dataUChar3 = data; }
-
-void Packet::setDataUChar4(uint8_t data)
-{ this->dataUChar4 = data; }
 
 int32_t Packet::getDataLong1()
 { return this->dataLong1; }
@@ -233,7 +245,6 @@ void Packet::resetData()
     this->setDataUChar1(0);
     this->setDataUChar2(0);
     this->setDataUChar3(0);
-    this->setDataUChar4(0);
 
     // long
     this->setDataLong1(0);
