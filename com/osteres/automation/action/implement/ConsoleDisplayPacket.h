@@ -36,10 +36,11 @@ namespace com
                             cout << "Packet received! (size: " << sizeof(*packet) << ")" << endl;
                             cout << "-- Packet content --" << endl;
                             cout << "Id: " << (int)packet->getId() << " Last: " << (packet->isLast() ? "yes" : "no") << endl;
-                            cout << "From: " << (int)packet->getSensor() << " To: " << (int)packet->getTarget() << endl;
+                            cout << "From type: " << (int)packet->getSourceType() << "From id: " << (int)packet->getSourceIdentifier()
+                            << " To: " << (int)packet->getTarget() << endl;
                             cout << "Command: " << CommandString::toString(packet->getCommand()) << endl;
                             cout << "UC1: " << (unsigned int)packet->getDataUChar1() << " UC2: " << (unsigned int)packet->getDataUChar2()
-                            << " UC3: " << (unsigned int)packet->getDataUChar3() << " UC4: " << (unsigned int)packet->getDataUChar4() << endl;
+                            << " UC3: " << (unsigned int)packet->getDataUChar3() << endl;
                             cout << "L1: " << packet->getDataLong1() << " L2: " << packet->getDataLong2()
                             << "L3: " << packet->getDataLong3() << " L4: " << packet->getDataLong4() << endl;
                             cout << "C1: " << (int)packet->getDataChar1() << " C2: " << (int)packet->getDataChar2()
