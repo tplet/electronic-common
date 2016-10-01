@@ -14,9 +14,9 @@ unsigned int Transmitter::defaultTtl = 1000;
 /**
  * Constructor
  */
-Transmitter::Transmitter(RF24 * radio, unsigned char sensor, bool isMaster)
+Transmitter::Transmitter(RF24 * radio, bool isMaster)
 {
-    Transmitter::construct(radio, sensor, isMaster);
+    Transmitter::construct(radio, isMaster);
 }
 
 /**
@@ -38,10 +38,9 @@ Transmitter::~Transmitter()
 /**
  * Constructor
  */
-void Transmitter::construct(RF24 * radio, unsigned char sensor, bool isMaster)
+void Transmitter::construct(RF24 * radio, bool isMaster)
 {
     this->radio = radio;
-    this->sensor = sensor;
     this->master = isMaster;
 
     // Channels
@@ -95,6 +94,14 @@ Receiver * Transmitter::getReceiver() {
 }
 
 /**
+ * Flag to indicate if receiver is defined
+ */
+bool Transmitter::hasReceiver()
+{
+    return this->receiver != NULL;
+}
+
+/**
  * Set requester
  */
 void Transmitter::setRequester(Requester * requester)
@@ -108,4 +115,12 @@ void Transmitter::setRequester(Requester * requester)
 void Transmitter::setReceiver(Receiver * receiver)
 {
     this->receiver = receiver;
+
+    // Apply properties if available
+    if (this->hasPropertySensorType()) {
+        this->receiver->setPropertySensorType(this->propertySensorType);
+    }
+    if (this->hasPropertySensorIdentifier()) {
+        this->receiver->setPropertySensorIdentifier(this->propertySensorIdentifier);
+    }
 }

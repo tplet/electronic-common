@@ -25,14 +25,14 @@ namespace com
                         Packet();
 
                         /**
-                         * Constructor with sensor
+                         * Constructor with sensor type
                          */
-                        Packet(uint8_t sensor);
+                        Packet(uint8_t sourceType);
 
                         /**
-                         * Constructor with sensor and id
+                         * Constructor with sensor type and id
                          */
-                        Packet(uint8_t sensor, uint8_t id);
+                        Packet(uint8_t sourceType, uint8_t id);
 
                         /**
                          * Destructor
@@ -55,14 +55,24 @@ namespace com
                         void nextId();
 
                         /**
-                         * Get sensor identifier
+                         * Get sensor type identifier
                          */
-                        uint8_t getSensor();
+                        uint8_t getSourceType();
 
                         /**
-                         * Set sensor identifier
+                         * Set sensor type identifier
                          */
-                        void setSensor(uint8_t sensor);
+                        void setSourceType(uint8_t type);
+
+                        /**
+                         * Get sensor identifier (uniq for all automation park)
+                         */
+                        uint8_t getSourceIdentifier();
+
+                        /**
+                         * Set sensor identifier (uniq for all automation park)
+                         */
+                        void setSourceIdentifier(uint8_t identifier);
 
                         /**
                          * Get command identifier
@@ -117,15 +127,11 @@ namespace com
 
                         uint8_t getDataUChar3();
 
-                        uint8_t getDataUChar4();
-
                         void setDataUChar1(uint8_t data);
 
                         void setDataUChar2(uint8_t data);
 
                         void setDataUChar3(uint8_t data);
-
-                        void setDataUChar4(uint8_t data);
 
                         int32_t getDataLong1();
 
@@ -171,7 +177,7 @@ namespace com
                         /**
                          * Containers
                          * Be careful to not exceed 32 bytes on total properties size!
-                         * Actually: 32 bytes (23 bytes for data)
+                         * Actually: 32 bytes (22 bytes for data)
                          *
                          * Check var type size between arduino and raspberry before declare it
                          * Raspbberry unknow: When 30 bytes declared, sizeof(request) equal to 32... Work with step ?
@@ -194,12 +200,11 @@ namespace com
 
                         /**
                          * Data byte containers
-                         * 4 x 1 byte = 4 bytes
+                         * 3 x 1 byte = 3 bytes
                          */
                         uint8_t dataUChar1;
                         uint8_t dataUChar2;
                         uint8_t dataUChar3;
-                        uint8_t dataUChar4;
 
                         /**
                          * Data char containers
@@ -216,11 +221,16 @@ namespace com
                         uint8_t id;
 
                         /**
-                         * Sensor identifier (uniq for all automation park)
+                         * Sensor type identifier
                          *
                          * 1 byte
                          */
-                        uint8_t sensor;
+                        uint8_t sourceType;
+
+                        /**
+                         * Sensor identifier (uniq for all automation park)
+                         */
+                        uint8_t sourceIdentifier;
 
                         /**
                          * Command identifier
