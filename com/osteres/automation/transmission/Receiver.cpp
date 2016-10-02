@@ -12,7 +12,6 @@ using namespace com::osteres::automation::transmission;
 Receiver::Receiver(RF24 * radio, unsigned long long readingChannel, unsigned int timeout = 1000) {
     this->radio = radio;
     this->setReadingChannel(readingChannel);
-    this->sensor = sensor;
     this->timeout = timeout;
 }
 

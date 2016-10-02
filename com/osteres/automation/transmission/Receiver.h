@@ -110,11 +110,6 @@ namespace com
                     Property<unsigned char> * propertySensorIdentifier = NULL;
 
                     /**
-                     * Sensor target which can receive packet
-                     */
-                    unsigned char sensor;
-
-                    /**
                      * Timeout after this waiting for response has been stoped
                      */
                     unsigned int timeout;
