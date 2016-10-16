@@ -49,6 +49,12 @@ namespace com
                                 case Command::INIT:
                                     s = "INIT";
                                     break;
+                                case Command::IDENTIFIER_REQUEST:
+                                    s = "IDENTIFIER_REQUEST";
+                                    break;
+                                case Command::IDENTIFIER_RESPONSE:
+                                    s = "IDENTIFIER_RESPONSE";
+                                    break;
                                 default:
                                     s = "";
                                     break;
