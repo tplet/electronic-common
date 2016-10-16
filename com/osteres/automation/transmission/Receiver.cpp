@@ -33,9 +33,17 @@ void Receiver::cleanResponse() {
 }
 
 /**
- * Listen response
+ * Listen response for default timeout time
  */
-bool Receiver::listen() {
+bool Receiver::listen()
+{
+    return this->listen(this->timeout);
+}
+
+/**
+ * Listen response for a certain time (in millisecond)
+ */
+bool Receiver::listen(unsigned int timeout) {
     // Ensure that no previous response (for memory security)
     this->cleanResponse();
 
@@ -57,7 +65,7 @@ bool Receiver::listen() {
         // Waiting for reading data
         do {
             available = this->radio->available();
-            if (millis() - start > this->timeout) {
+            if (millis() - start > timeout) {
                 noResponse = true;
                 toReceive = false;
             }

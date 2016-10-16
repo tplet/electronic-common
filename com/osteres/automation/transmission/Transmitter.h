@@ -84,9 +84,20 @@ namespace com
                     /**
                      * Listen packets and if receive, forward to action manager for process
                      *
-                     * @return bool True if packet received during listen process
+                     * @return bool True if packer received during listen process
                      */
                     bool listen()
+                    {
+                        return this->listen(this->getReceiver()->getTimeout());
+                    }
+
+                    /**
+                     * Listen packets and if receive, forward to action manager for process
+                     * and set timeout time to receive packet in millisecond
+                     *
+                     * @return bool True if packet received during listen process
+                     */
+                    bool listen(unsigned int timeout)
                     {
                         //Serial.println(F("Transmitter: Listen packet..."));
 
@@ -99,7 +110,7 @@ namespace com
 
                         bool last = false;
                         // Waiting for response
-                        while (!last && this->getReceiver()->listen()) {
+                        while (!last && this->getReceiver()->listen(timeout)) {
                             i++;
 
                             response = this->getReceiver()->getResponse();

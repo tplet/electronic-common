@@ -34,9 +34,14 @@ namespace com
                     ~Receiver();
 
                     /**
-                     * Listen response for certain time
+                     * Listen response for default timeout time
                      */
                     bool listen();
+
+                    /**
+                     * Listen response for certain time (in millisecond)
+                     */
+                    bool listen(unsigned int timeout);
 
                     /**
                      * Get packet received
@@ -54,12 +59,12 @@ namespace com
                     void cleanResponse();
 
                     /**
-                     * Set timeout
+                     * Set timeout in millisecond
                      */
                     void setTimeout(unsigned int timeout);
 
                     /**
-                     * Get timeout
+                     * Get timeout in millisecond
                      */
                     unsigned int getTimeout();
 
@@ -110,7 +115,7 @@ namespace com
                     Property<unsigned char> * propertySensorIdentifier = NULL;
 
                     /**
-                     * Timeout after this waiting for response has been stoped
+                     * Timeout after this waiting for response has been stopped (millisecond)
                      */
                     unsigned int timeout;
 
