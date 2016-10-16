@@ -71,11 +71,19 @@ namespace com
                     }
 
                     /**
+                     * Send packet without checking for response confirmation
+                     */
+                    bool send(Packet * packet)
+                    {
+                        return this->getRequester()->send(packet);
+                    }
+
+                    /**
                      * Send packet
                      *
                      * Return success state (true if packet successfully transmitted and received, false otherwise)
                      */
-                    bool send(Packet * packet)
+                    bool sendAndConfirm(Packet * packet)
                     {
                         // Send with requester and use receiver to check if successful transmitted
                         return this->getRequester()->send(packet, this->getReceiver());
@@ -104,6 +112,12 @@ namespace com
                         // Confirm packet
                         Packet * packetOk = new Packet();
                         packetOk->setCommand(Command::OK);
+                        if (this->hasPropertySensorIdentifier()) {
+                            packetOk->setSourceIdentifier(this->propertySensorIdentifier->get());
+                        }
+                        if (this->hasPropertySensorType()) {
+                            packetOk->setSourceType(this->propertySensorType->get());
+                        }
 
                         Packet * response = NULL;
                         int i = 0;
