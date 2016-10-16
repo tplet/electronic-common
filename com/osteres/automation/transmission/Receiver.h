@@ -8,9 +8,11 @@
 #include <cstddef>
 #include <com/osteres/automation/proxy/RF24.h>
 #include <com/osteres/automation/transmission/packet/Packet.h>
+#include <com/osteres/automation/transmission/packet/Command.h>
 #include <com/osteres/automation/memory/Property.h>
 
 using com::osteres::automation::transmission::packet::Packet;
+using com::osteres::automation::transmission::packet::Command;
 using com::osteres::automation::memory::Property;
 
 namespace com

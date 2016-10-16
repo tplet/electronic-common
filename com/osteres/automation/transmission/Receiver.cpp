@@ -84,7 +84,13 @@ bool Receiver::listen(unsigned int timeout) {
 
             // Check if packet are right destined to this (false positive),
             // if not, try again until packet received is for this sensor (can take a long time if many packet exchanged)
-            if (response != NULL && this->hasPropertySensorType() && response->getTarget() != this->propertySensorType->get()) {
+            bool accept = response != NULL;
+            if (accept && response->getCommand() == Command::IDENTIFIER_RESPONSE) {
+                accept = this->hasPropertySensorType() && response->getTarget() == this->propertySensorType->get();
+            } else if (accept) {
+                accept = this->hasPropertySensorIdentifier() && response->getTarget() == this->propertySensorIdentifier->get();
+            }
+            if (!accept) {
                 delete response;
                 response = NULL;
                 // Then, listen again response
