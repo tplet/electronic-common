@@ -116,6 +116,24 @@ namespace com
                     }
 
                     /**
+                     * Receive
+                     */
+                    void r(unsigned int timeout)
+                    {
+                        this->stepInit();
+                        this->stepReceive(timeout);
+                    }
+
+                    /**
+                     * Send
+                     */
+                    void s()
+                    {
+                        this->stepInit();
+                        this->stepSend();
+                    }
+
+                    /**
                      * Append packet to queue
                      */
                     void add(Packet * packet);
