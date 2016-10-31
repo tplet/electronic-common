@@ -72,7 +72,9 @@ void Requester::doSend(Packet * packet)
 
     // Send
     this->radio->write(packet, sizeof(Packet));
+    cout << "Packet writed" << endl;
     delay(10);
+    cout << "After delay(10)" << endl;
 }
 
 /**
