@@ -45,11 +45,7 @@ namespace com {
                                 p->setSourceIdentifier(packet->getTarget());
                                 p->setCommand(Command::OK);
                                 p->setDataUChar1(packet->getId());
-                                p->setLast(true);
-                                this->transmitter->send(p);
-
-                                // Free memory
-                                delete p;
+                                this->transmitter->add(p);
 
                                 this->executed = true;
                                 return true;
