@@ -15,7 +15,7 @@
 #include <com/osteres/automation/transmission/packet/Command.h>
 #include <com/osteres/automation/transmission/packet/CommandString.h>
 #include <com/osteres/automation/memory/Property.h>
-#include <queue>
+#include <vector>
 
 using com::osteres::automation::transmission::packet::Packet;
 using com::osteres::automation::action::ActionManagerBase;
@@ -25,8 +25,7 @@ using com::osteres::automation::transmission::Receiver;
 using com::osteres::automation::transmission::packet::Command;
 using com::osteres::automation::transmission::packet::CommandString;
 using com::osteres::automation::memory::Property;
-using std::queue;
-using namespace std;
+using std::vector;
 
 namespace com
 {
@@ -311,7 +310,7 @@ namespace com
                     /**
                      * Get queue
                      */
-                    std::queue<Packing *> * getQueue()
+                    vector<Packing *> * getQueue()
                     {
                         return this->queue;
                     }
@@ -319,7 +318,7 @@ namespace com
                     /**
                      * Get queue sended
                      */
-                    std::queue<Packing *> * getQueueSended()
+                    vector<Packing *> * getQueueSended()
                     {
                         return this->queueSended;
                     }
@@ -432,12 +431,12 @@ namespace com
                     /**
                      * Packing list waiting for confirmation
                      */
-                    std::queue<Packing *> * queueSended;
+                    vector<Packing *> * queueSended;
 
                     /**
                      * Packing list to send
                      */
-                    std::queue<Packing *> * queue;
+                    vector<Packing *> * queue;
                 };
             }
         }

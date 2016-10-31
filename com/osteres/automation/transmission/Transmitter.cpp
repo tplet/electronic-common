@@ -69,8 +69,8 @@ void Transmitter::construct(RF24 * radio, bool isMaster)
     this->setWritingChannel(writingChannel);
 
     // Queue
-    this->queue = new std::queue<Packing *>();
-    this->queueSended= new std::queue<Packing *>();
+    this->queue = new vector<Packing *>();
+    this->queueSended= new vector<Packing *>();
 }
 
 /**
@@ -81,11 +81,8 @@ void Transmitter::stepInit()
     Packing * packing = NULL;
 
     // Move sended queue to normal queue (= resend packet!)
-    while (!this->getQueueSended()->empty()) {
-        packing = this->getQueueSended()->front();
-        this->getQueueSended()->pop();
-        this->getQueue()->push(packing);
-    }
+    this->getQueueSended()->insert(this->getQueueSended()->end(), this->getQueue()->begin(), this->getQueue()->end());
+    this->getQueueSended()->clear();
 }
 
 /**
@@ -94,12 +91,13 @@ void Transmitter::stepInit()
 void Transmitter::stepSend()
 {
     Packing * packing = NULL;
+    //Serial.println("Step send (with " + String(this->getQueue()->size()) + " packing)");
 
     // For each packing in queue
     while (!this->getQueue()->empty()) {
         // Set last property
         packing = this->getQueue()->front();
-        this->getQueue()->pop();
+        this->getQueue()->pop_back();
         packing->getPacket()->setLast(this->getQueue()->empty());
 
         // Send
@@ -107,7 +105,7 @@ void Transmitter::stepSend()
 
         // If confirm asked, move to other queue
         if (packing->isNeedConfirm()) {
-            this->getQueueSended()->push(packing);
+            this->getQueueSended()->push_back(packing);
         } else {
             // Free memory
             delete packing;
@@ -121,6 +119,7 @@ void Transmitter::stepSend()
  */
 void Transmitter::stepReceive(unsigned int timeout)
 {
+    //Serial.println("Step receive");
     this->listen(timeout);
 }
 
@@ -137,7 +136,7 @@ void Transmitter::stepReceive()
  */
 void Transmitter::add(Packing * packing)
 {
-    this->getQueue()->push(packing);
+    this->getQueue()->push_back(packing);
 }
 
 /**
@@ -147,7 +146,7 @@ void Transmitter::add(Packet * packet, bool withConfirm)
 {
     Packing * packing = new Packing(packet, withConfirm);
 
-    this->getQueue()->push(packing);
+    this->add(packing);
 }
 
 /**
@@ -222,18 +221,18 @@ void Transmitter::confirm(Packet * response)
         Packing *packing = NULL;
         // Search packet in sended queue
         unsigned int size = this->getQueueSended()->size();
-        for (int i = 0; i < size; i++) {
-            packing = this->getQueueSended()->front();
-            this->getQueueSended()->pop();
+        for (unsigned int i = 0; i < size; i++) {
+            packing = this->getQueueSended()->at(i);
 
             // Remove packing if id match (confirmed)
             if (packing->isNeedConfirm() && packing->getPacket()->getId() == response->getDataUChar1()) {
                 packing->setConfirmed(true);
                 delete packing;
                 packing = NULL;
-            } // Else, append packing to sended queue
-            else {
-                this->getQueueSended()->push(packing);
+
+                this->getQueueSended()->erase(this->getQueueSended()->begin() + i);
+                i--;
+                size--;
             }
         }
     }
