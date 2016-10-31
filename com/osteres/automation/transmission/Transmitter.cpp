@@ -109,8 +109,10 @@ void Transmitter::stepSend()
 
         // If confirm asked, move to other queue
         if (packing->isNeedConfirm()) {
+            cout << "Save packet to sended queue" << endl;
             this->getQueueSended()->push_back(packing);
-        } else {
+            cout << "Queue sended push bash" << endl;
+        } else if (packing != NULL) {
             // Free memory
             delete packing;
             packing = NULL;
