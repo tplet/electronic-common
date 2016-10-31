@@ -81,7 +81,7 @@ void Transmitter::stepInit()
     Packing * packing = NULL;
 
     // Move sended queue to normal queue (= resend packet!)
-    this->getQueueSended()->insert(this->getQueueSended()->end(), this->getQueue()->begin(), this->getQueue()->end());
+    this->getQueue()->insert(this->getQueue()->end(), this->getQueueSended()->begin(), this->getQueueSended()->end());
     this->getQueueSended()->clear();
 }
 
@@ -95,9 +95,9 @@ void Transmitter::stepSend()
 
     // For each packing in queue
     while (!this->getQueue()->empty()) {
-        // Set last property
         packing = this->getQueue()->front();
         this->getQueue()->pop_back();
+        // Set last property
         packing->getPacket()->setLast(this->getQueue()->empty());
 
         // Send
@@ -112,6 +112,7 @@ void Transmitter::stepSend()
             packing = NULL;
         }
     }
+    // Here, queue is empty
 }
 
 /**
@@ -261,6 +262,8 @@ Packet * Transmitter::generatePacketOK()
  */
 bool Transmitter::send(Packing * packing)
 {
+    packing->setSended(true);
+
     return this->getRequester()->send(packing);
 }
 

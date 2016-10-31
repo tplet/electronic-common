@@ -140,6 +140,22 @@ namespace com
                         this->confirmDuration = duration;
                     }
 
+                    /**
+                     * Flag to indicate if packet has been sended
+                     */
+                    bool isSended()
+                    {
+                        return this->sended;
+                    }
+
+                    /**
+                     * Indicate if packet has been sended
+                     */
+                    void setSended(bool flag)
+                    {
+                        this->sended = flag;
+                    }
+
                 protected:
 
                     /**
@@ -161,6 +177,11 @@ namespace com
                      * Flag to indicate if packet has been successfully received
                      */
                     bool confirmed;
+
+                    /**
+                     * Flag to indicate if packet has been sended
+                     */
+                    bool sended;
 
                     /**
                      * Flag to indicate if packet need to be confirmed by target
