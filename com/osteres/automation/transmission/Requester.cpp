@@ -57,11 +57,15 @@ void Requester::doSend(Packet * packet)
     // Prepare unique id
     packet->setId(IDGenerator::getNextId());
 
+    cout << "Stop listening" << endl;
     // Ensure that radio not currently listening
     this->radio->stopListening();
 
     // Writing channel
+    cout << "Open writing" << endl;
     this->radio->openWritingPipe(this->writingChannel);
+
+    cout << "Id: " << (int)packet->getId() << endl;
 
     // Send
     this->radio->write(packet, sizeof(Packet));
