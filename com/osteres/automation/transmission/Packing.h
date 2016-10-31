@@ -27,6 +27,10 @@ namespace com
                     {
                         this->setPacket(packet);
                         this->setConfirmDuration(Packing::defaultConfirmDuration);
+                        this->confirmed = false;
+                        this->sended = false;
+                        this->needConfirm = false;
+                        this->date = 0;
                     }
 
                     /**
@@ -37,6 +41,9 @@ namespace com
                         this->setPacket(packet);
                         this->setNeedConfirm(withConfirm);
                         this->setConfirmDuration(Packing::defaultConfirmDuration);
+                        this->confirmed = false;
+                        this->sended = false;
+                        this->date = 0;
                     }
 
                     /**
