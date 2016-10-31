@@ -70,7 +70,7 @@ void Transmitter::construct(RF24 * radio, bool isMaster)
 
     // Queue
     this->queue = new vector<Packing *>();
-    this->queueSended= new vector<Packing *>();
+    this->queueSended = new vector<Packing *>();
 }
 
 /**
@@ -181,15 +181,17 @@ bool Transmitter::listen(unsigned int timeout)
 
         response = this->getReceiver()->getResponse();
 
-        // Prepare success receiving response (not send yet)
-        packetOk = this->generatePacketOK();
-        packetOk->setTarget(response->getSourceIdentifier());
-        packetOk->setDataUChar1(response->getId());
-        packetOk->setDate(0);
-        this->add(packetOk);
-
         // Confirm packet in sended queue
-        this->confirm(response);
+        if (response->getCommand() == Command::OK) {
+            this->confirm(response);
+        } // Prepare success receiving response (not send yet)
+        else {
+            packetOk = this->generatePacketOK();
+            packetOk->setTarget(response->getSourceIdentifier());
+            packetOk->setDataUChar1(response->getId());
+            packetOk->setDate(0);
+            this->add(packetOk);
+        }
 
         // Processing
         if (this->hasActionManager()) {
