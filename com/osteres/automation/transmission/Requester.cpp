@@ -6,7 +6,10 @@
 #include <com/osteres/util/IDGenerator.h>
 #include <com/osteres/automation/transmission/packet/Command.h>
 #include <com/osteres/automation/polyfill/delay.h>
+#include <iostream>
+#include <inttypes.h>
 
+using namespace std;
 using com::osteres::util::IDGenerator;
 using com::osteres::automation::transmission::packet::Command;
 using namespace com::osteres::automation::transmission;
@@ -37,6 +40,7 @@ void Requester::clean() {
  */
 bool Requester::send(Packing * packing)
 {
+    cout << "Requester: send" << endl;
     // Send
     this->doSend(packing->getPacket());
 

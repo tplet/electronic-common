@@ -3,7 +3,10 @@
 //
 
 #include "Transmitter.h"
+#include <iostream>
+#include <inttypes.h>
 
+using namespace std;
 using namespace com::osteres::automation::transmission;
 
 /**
@@ -92,6 +95,7 @@ void Transmitter::stepSend()
 {
     Packing * packing = NULL;
     //Serial.println("Step send (with " + String(this->getQueue()->size()) + " packing)");
+    cout << "Step send, with " << (int)this->getQueue()->size() << " packing" << endl;
 
     // For each packing in queue
     while (!this->getQueue()->empty()) {
@@ -121,6 +125,7 @@ void Transmitter::stepSend()
 void Transmitter::stepReceive(unsigned int timeout)
 {
     //Serial.println("Step receive");
+    cout << "Step receive" << endl;
     this->listen(timeout);
 }
 
@@ -272,6 +277,7 @@ vector<Packing *>* Transmitter::getQueue()
  */
 bool Transmitter::send(Packing * packing)
 {
+    cout << "Send packing" << endl;
     packing->setSended(true);
 
     return this->getRequester()->send(packing);
