@@ -258,6 +258,14 @@ Packet * Transmitter::generatePacketOK()
 }
 
 /**
+ * Get queue
+ */
+vector<Packing *>* Transmitter::getQueue()
+{
+    return this->queue;
+}
+
+/**
  * Send packet without checking for response confirmation
  */
 bool Transmitter::send(Packing * packing)

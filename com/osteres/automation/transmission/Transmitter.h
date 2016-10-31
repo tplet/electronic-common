@@ -308,14 +308,6 @@ namespace com
                     }
 
                     /**
-                     * Get queue
-                     */
-                    vector<Packing *> * getQueue()
-                    {
-                        return this->queue;
-                    }
-
-                    /**
                      * Get queue sended
                      */
                     vector<Packing *> * getQueueSended()
@@ -371,6 +363,11 @@ namespace com
                      * Confirm packet if possible
                      */
                     void confirm(Packet * response);
+
+                    /**
+                     * Get queue
+                     */
+                    vector<Packing *> * getQueue();
 
                     /**
                      * Default ttl
