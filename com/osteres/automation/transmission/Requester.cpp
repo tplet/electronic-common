@@ -5,6 +5,7 @@
 #include "Requester.h"
 #include <com/osteres/util/IDGenerator.h>
 #include <com/osteres/automation/transmission/packet/Command.h>
+#include <com/osteres/automation/transmission/packet/CommandString.h>
 #include <com/osteres/automation/polyfill/delay.h>
 #include <iostream>
 #include <inttypes.h>
@@ -12,6 +13,7 @@
 using namespace std;
 using com::osteres::util::IDGenerator;
 using com::osteres::automation::transmission::packet::Command;
+using com::osteres::automation::transmission::packet::CommandString;
 using namespace com::osteres::automation::transmission;
 
 /**
@@ -66,6 +68,7 @@ void Requester::doSend(Packet * packet)
     this->radio->openWritingPipe(this->writingChannel);
 
     cout << "Id: " << (int)packet->getId() << endl;
+    cout << "Command: " << CommandString::toString(packet->getCommand()) << endl;
 
     // Send
     this->radio->write(packet, sizeof(Packet));
