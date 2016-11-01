@@ -42,7 +42,6 @@ void Requester::clean() {
  */
 bool Requester::send(Packing * packing)
 {
-    cout << "Requester: send" << endl;
     // Send
     this->doSend(packing->getPacket());
 
@@ -59,22 +58,15 @@ void Requester::doSend(Packet * packet)
     // Prepare unique id
     packet->setId(IDGenerator::getNextId());
 
-    cout << "Stop listening" << endl;
     // Ensure that radio not currently listening
     this->radio->stopListening();
 
     // Writing channel
-    cout << "Open writing" << endl;
     this->radio->openWritingPipe(this->writingChannel);
-
-    cout << "Id: " << (int)packet->getId() << endl;
-    cout << "Command: " << CommandString::toString(packet->getCommand()) << endl;
 
     // Send
     this->radio->write(packet, sizeof(Packet));
-    cout << "Packet writed" << endl;
     delay(10);
-    cout << "After delay(10)" << endl;
 }
 
 /**
