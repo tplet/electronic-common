@@ -98,9 +98,18 @@ void Transmitter::stepSend()
     cout << "Step send, with " << (int)this->getQueue()->size() << " packing" << endl;
 
     // For each packing in queue
-    while (!this->getQueue()->empty()) {
-        packing = this->getQueue()->front();
-        this->getQueue()->pop_back();
+    while (this->getQueue()->size() > 0) {
+        packing = this->getQueue()->at(0);
+        this->getQueue()->erase(this->getQueue()->begin());
+        // Security
+        if (packing == NULL) {
+            continue;
+        }
+        if (packing->getPacket() == NULL) {
+            delete packing;
+            packing = NULL;
+            continue;
+        }
         // Set last property
         packing->getPacket()->setLast(this->getQueue()->empty());
 

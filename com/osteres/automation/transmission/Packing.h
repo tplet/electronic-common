@@ -74,6 +74,13 @@ namespace com
                         this->packet = packet;
                     }
 
+                    /**
+                     * Flag to indicate if a packet defined
+                     */
+                    bool hasPacket()
+                    {
+                        return this->packet != NULL;
+                    }
 
                     /**
                      * Get date
