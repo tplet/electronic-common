@@ -35,7 +35,8 @@ namespace com
                             cout << endl;
                             cout << "Packet received! (size: " << sizeof(*packet) << ")" << endl;
                             cout << "-- Packet content --" << endl;
-                            cout << "Id: " << (int)packet->getId() << " Last: " << (packet->isLast() ? "yes" : "no") << endl;
+                            cout << "Id: " << (int)packet->getId() << " Last: " << (packet->isLast() ? "yes" : "no")
+                            << " date: " << packet->getDate() << endl;
                             cout << "From type: " << (int)packet->getSourceType() << " id: " << (int)packet->getSourceIdentifier()
                             << " To: " << (int)packet->getTarget() << endl;
                             cout << "Command: " << CommandString::toString(packet->getCommand()) << endl;
