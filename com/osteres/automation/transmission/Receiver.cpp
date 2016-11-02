@@ -93,6 +93,8 @@ bool Receiver::listen(unsigned int timeout) {
             if (!accept) {
                 delete response;
                 response = NULL;
+                start = millis();
+                available = false;
                 // Then, listen again response
             } // Response successfully received
             else {

@@ -5,10 +5,15 @@
 #include "Requester.h"
 #include <com/osteres/util/IDGenerator.h>
 #include <com/osteres/automation/transmission/packet/Command.h>
+#include <com/osteres/automation/transmission/packet/CommandString.h>
 #include <com/osteres/automation/polyfill/delay.h>
+#include <iostream>
+#include <inttypes.h>
 
+using namespace std;
 using com::osteres::util::IDGenerator;
 using com::osteres::automation::transmission::packet::Command;
+using com::osteres::automation::transmission::packet::CommandString;
 using namespace com::osteres::automation::transmission;
 
 /**
@@ -33,30 +38,14 @@ void Requester::clean() {
 }
 
 /**
- * Send packet and check if it has been successfully received (send by using RF24)
- */
-bool Requester::send(Packet * packet, Receiver * receiver) {
-
-    //Serial.println(F("Requester: Send packet and wait confirmation."));
-
-    // Send
-    this->doSend(packet);
-
-    // Waiting for response
-    this->success = this->doListenSuccessSent(packet, receiver);
-
-    // Return success state
-    return this->success;
-}
-
-/**
  * Send packet without checking success receiving
  */
-bool Requester::send(Packet * packet) {
-    //Serial.println(F("Requester: Send packet without waiting for confirmation."));
-
+bool Requester::send(Packing * packing)
+{
     // Send
-    this->doSend(packet);
+    this->doSend(packing->getPacket());
+
+    this->success = true;
 
     return true;
 }
@@ -64,7 +53,8 @@ bool Requester::send(Packet * packet) {
 /**
  * Prepare packet and send it only (no response attempted)
  */
-void Requester::doSend(Packet * packet) {
+void Requester::doSend(Packet * packet)
+{
     // Prepare unique id
     packet->setId(IDGenerator::getNextId());
 
@@ -77,30 +67,6 @@ void Requester::doSend(Packet * packet) {
     // Send
     this->radio->write(packet, sizeof(Packet));
     delay(10);
-}
-
-/**
- * Waiting for success response
- */
-bool Requester::doListenSuccessSent(Packet * packet, Receiver * receiver) {
-    bool success = false;
-
-    if (receiver->listen()) {
-        // Checking response (command: OK, exclusively for packet id send)
-        // Note that if response received but it's not a OK command: abort!
-        if (receiver->getResponse()->getCommand() == Command::OK &&
-            receiver->getResponse()->getDataUChar1() == packet->getId()) {
-            success = true;
-        }
-    }
-    // Timeout or no OK command received
-    if (!success) {
-        //Serial.println(F("Requester: No confirmation received..."));
-    } else {
-        //Serial.println(F("Requester: Confirmation received!"));
-    }
-
-    return success;
 }
 
 /**

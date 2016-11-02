@@ -8,8 +8,10 @@
 #include <com/osteres/automation/proxy/RF24.h>
 #include <com/osteres/automation/transmission/packet/Packet.h>
 #include <com/osteres/automation/transmission/Receiver.h>
+#include <com/osteres/automation/transmission/Packing.h>
 
 using com::osteres::automation::transmission::packet::Packet;
+using com::osteres::automation::transmission::Packing;
 
 namespace com
 {
@@ -37,14 +39,9 @@ namespace com
                     void clean();
 
                     /**
-                     * Send packet and check if it has been successfully received
-                     */
-                    bool send(Packet * packet, Receiver * receiver);
-
-                    /**
                      * Send packet without checking success receiving
                      */
-                    bool send(Packet * packet);
+                    bool send(Packing * packing);
 
                     /**
                      * Flag to indicate if request has succeeded
@@ -60,12 +57,7 @@ namespace com
                     /**
                      * Prepare packet and send it only (no response attempted)
                      */
-                    void doSend(Packet * packet);
-
-                    /**
-                     * Waiting for success response
-                     */
-                    bool doListenSuccessSent(Packet * packet, Receiver * receiver);
+                    virtual void doSend(Packet * packet);
 
                     /**
                      * Radio transmitter

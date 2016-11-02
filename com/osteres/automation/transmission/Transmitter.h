@@ -9,17 +9,23 @@
 #include <com/osteres/automation/proxy/RF24.h>
 #include <com/osteres/automation/transmission/packet/Packet.h>
 #include <com/osteres/automation/action/ActionManagerBase.h>
+#include <com/osteres/automation/transmission/Packing.h>
 #include <com/osteres/automation/transmission/Requester.h>
 #include <com/osteres/automation/transmission/Receiver.h>
 #include <com/osteres/automation/transmission/packet/Command.h>
+#include <com/osteres/automation/transmission/packet/CommandString.h>
 #include <com/osteres/automation/memory/Property.h>
+#include <vector>
 
 using com::osteres::automation::transmission::packet::Packet;
 using com::osteres::automation::action::ActionManagerBase;
+using com::osteres::automation::transmission::Packing;
 using com::osteres::automation::transmission::Requester;
 using com::osteres::automation::transmission::Receiver;
 using com::osteres::automation::transmission::packet::Command;
+using com::osteres::automation::transmission::packet::CommandString;
 using com::osteres::automation::memory::Property;
+using std::vector;
 
 namespace com
 {
@@ -71,96 +77,75 @@ namespace com
                     }
 
                     /**
-                     * Send packet without checking for response confirmation
+                     * Send - receive - send
                      */
-                    bool send(Packet * packet)
+                    void srs()
                     {
-                        return this->getRequester()->send(packet);
+                        this->srs(this->getReceiver()->getTimeout());
                     }
 
                     /**
-                     * Send packet
-                     *
-                     * Return success state (true if packet successfully transmitted and received, false otherwise)
+                     * Receive - send - receive
                      */
-                    bool sendAndConfirm(Packet * packet)
+                    void rsr()
                     {
-                        // Send with requester and use receiver to check if successful transmitted
-                        return this->getRequester()->send(packet, this->getReceiver());
+                        this->rsr(this->getReceiver()->getTimeout());
                     }
 
                     /**
-                     * Listen packets and if receive, forward to action manager for process
-                     *
-                     * @return bool True if packer received during listen process
+                     * Send - receive - send
                      */
-                    bool listen()
+                    void srs(unsigned int timeout)
                     {
-                        return this->listen(this->getReceiver()->getTimeout());
+                        this->stepInit();
+                        this->stepSend();
+                        this->stepReceive(timeout);
+                        this->stepSend();
                     }
 
                     /**
-                     * Listen packets and if receive, forward to action manager for process
-                     * and set timeout time to receive packet in millisecond
-                     *
-                     * @return bool True if packet received during listen process
+                     * Receive - send - receive
                      */
-                    bool listen(unsigned int timeout)
+                    void rsr(unsigned int timeout)
                     {
-                        //Serial.println(F("Transmitter: Listen packet..."));
-
-                        // Confirm packet
-                        Packet * packetOk = new Packet();
-                        packetOk->setCommand(Command::OK);
-                        if (this->hasPropertySensorIdentifier()) {
-                            packetOk->setSourceIdentifier(this->propertySensorIdentifier->get());
-                        }
-                        if (this->hasPropertySensorType()) {
-                            packetOk->setSourceType(this->propertySensorType->get());
-                        }
-
-                        Packet * response = NULL;
-                        int i = 0;
-
-                        bool last = false;
-                        // Waiting for response
-                        while (!last && this->getReceiver()->listen(timeout)) {
-                            i++;
-
-                            response = this->getReceiver()->getResponse();
-
-                            // Send success receiving response
-                            packetOk->setTarget(response->getSourceIdentifier());
-                            packetOk->setDataUChar1(response->getId());
-                            packetOk->setDate(0);
-                            this->getRequester()->send(packetOk);
-
-                            // Processing
-                            if (this->hasActionManager()) {
-                                this->actionManager->processPacket(response);
-                            }
-
-                            // Check flag last. If true, waiting for another response
-                            last = response->isLast();
-
-                            // Clean receiver response (no need this instance anymore)
-                            this->getReceiver()->cleanResponse();
-                        }
-
-                        //Serial.print(F("Transmitter: Stop listening. "));
-                        //Serial.print(i);
-                        //Serial.println(F(" packet received and processed."));
-
-                        // Free memory
-                        if (packetOk != NULL) {
-                            delete packetOk;
-                            packetOk = NULL;
-                        }
-                        // Clean response (no more used)
-                        this->getReceiver()->cleanResponse();
-
-                        return i > 0;
+                        this->stepInit();
+                        this->stepReceive(timeout);
+                        this->stepSend();
+                        this->stepReceive(timeout);
                     }
+
+                    /**
+                     * Receive
+                     */
+                    void r(unsigned int timeout)
+                    {
+                        this->stepInit();
+                        this->stepReceive(timeout);
+                    }
+
+                    /**
+                     * Send
+                     */
+                    void s()
+                    {
+                        this->stepInit();
+                        this->stepSend();
+                    }
+
+                    /**
+                     * Append packet to queue
+                     */
+                    void add(Packet * packet);
+
+                    /**
+                     * Append packet to queue and ask confirm when received by target
+                     */
+                    void add(Packet * packet, bool withConfirm);
+
+                    /**
+                     * Append packing directly to queue
+                     */
+                    void add(Packing * packing);
 
                     /**
                      * Get default ttl before timeout (in seconds)
@@ -171,6 +156,16 @@ namespace com
                      * Set default ttl before timeout (in seconds)
                      */
                     static void setDefaultTTL(unsigned int ttl);
+
+                    /**
+                     * Get max packet allowed in queue
+                     */
+                    static unsigned int getMaxPacketQueue();
+
+                    /**
+                     * Set max packet allowed in queue
+                     */
+                    static void setMaxPacketQueue(unsigned int max);
 
                     /**
                      * Action manager setter
@@ -312,6 +307,14 @@ namespace com
                         return this->propertySensorIdentifier != NULL;
                     }
 
+                    /**
+                     * Get queue sended
+                     */
+                    vector<Packing *> * getQueueSended()
+                    {
+                        return this->queueSended;
+                    }
+
                 protected:
                     /**
                      * Constructor
@@ -319,9 +322,62 @@ namespace com
                     void construct(RF24 * radio, bool isMaster);
 
                     /**
+                     * Send step
+                     */
+                    void stepSend();
+
+                    /**
+                     * Receive step
+                     */
+                    void stepReceive(unsigned int timeout);
+
+                    /**
+                     * Receive step
+                     */
+                    void stepReceive();
+
+                    /**
+                     * Init step
+                     */
+                    void stepInit();
+
+                    /**
+                     * Listen packets and if receive, forward to action manager for process
+                     * and set timeout time to receive packet in millisecond
+                     *
+                     * @return bool True if packet received during listen process
+                     */
+                    bool listen(unsigned int timeout);
+
+                    /**
+                     * Generate OK packet for confirm response
+                     */
+                    Packet * generatePacketOK();
+
+                    /**
+                     * Send packing
+                     */
+                    bool send(Packing * packing);
+
+                    /**
+                     * Confirm packet if possible
+                     */
+                    void confirm(Packet * response);
+
+                    /**
+                     * Get queue
+                     */
+                    vector<Packing *> * getQueue();
+
+                    /**
                      * Default ttl
                      */
                     static unsigned int defaultTtl;
+
+                    /**
+                     * Max packet in queue
+                     */
+                    static unsigned int maxPacketQueue;
 
                     /**
                      * Action manager to forward response received
@@ -368,6 +424,16 @@ namespace com
                      * Channel to write
                      */
                     unsigned long long writingChannel;
+
+                    /**
+                     * Packing list waiting for confirmation
+                     */
+                    vector<Packing *> * queueSended;
+
+                    /**
+                     * Packing list to send
+                     */
+                    vector<Packing *> * queue;
                 };
             }
         }

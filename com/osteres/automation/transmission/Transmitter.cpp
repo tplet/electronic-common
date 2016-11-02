@@ -3,13 +3,21 @@
 //
 
 #include "Transmitter.h"
+#include <iostream>
+#include <inttypes.h>
 
+using namespace std;
 using namespace com::osteres::automation::transmission;
 
 /**
  * Default ttl (in milliseconds)
  */
 unsigned int Transmitter::defaultTtl = 1000;
+
+/**
+ * Max packet allowed in queue
+ */
+unsigned int Transmitter::maxPacketQueue = 10;
 
 /**
  * Constructor
@@ -33,6 +41,16 @@ Transmitter::~Transmitter()
         delete this->receiver;
         this->receiver = NULL;
     }
+
+    // Remove queue
+    if (this->queue != NULL) {
+        delete this->queue;
+        this->queue = NULL;
+    }
+    if (this->queueSended != NULL) {
+        delete this->queueSended;
+        this->queueSended = NULL;
+    }
 }
 
 /**
@@ -52,6 +70,223 @@ void Transmitter::construct(RF24 * radio, bool isMaster)
     }
     this->setReadingChannel(readingChannel);
     this->setWritingChannel(writingChannel);
+
+    // Queue
+    this->queue = new vector<Packing *>();
+    this->queueSended = new vector<Packing *>();
+}
+
+/**
+ * Init step
+ */
+void Transmitter::stepInit()
+{
+    Packing * packing = NULL;
+
+    // Move sended queue to normal queue (= resend packet!)
+    this->getQueue()->insert(this->getQueue()->end(), this->getQueueSended()->begin(), this->getQueueSended()->end());
+    this->getQueueSended()->clear();
+}
+
+/**
+ * Send step
+ */
+void Transmitter::stepSend()
+{
+    Packing * packing = NULL;
+    //Serial.println("Step send (with " + String(this->getQueue()->size()) + " packing)");
+
+    // For each packing in queue
+    while (this->getQueue()->size() > 0) {
+        packing = this->getQueue()->at(0);
+        this->getQueue()->erase(this->getQueue()->begin());
+        // Security
+        if (packing == NULL) {
+            continue;
+        }
+        if (!packing->hasPacket()) {
+            delete packing;
+            packing = NULL;
+            continue;
+        }
+        // Set last property
+        packing->getPacket()->setLast(this->getQueue()->empty());
+
+        // Send
+        this->send(packing);
+
+        // If confirm asked, move to other queue
+        if (packing->isNeedConfirm()) {
+            this->getQueueSended()->push_back(packing);
+        } else if (packing != NULL) {
+            // Free memory
+            delete packing;
+            packing = NULL;
+        }
+    }
+    // Here, queue is empty
+}
+
+/**
+ * Receive step
+ */
+void Transmitter::stepReceive(unsigned int timeout)
+{
+    //Serial.println("Step receive");
+    this->listen(timeout);
+}
+
+/**
+ * Receive step
+ */
+void Transmitter::stepReceive()
+{
+    this->listen(this->getReceiver()->getTimeout());
+}
+
+/**
+ * Add packing directly to queue
+ */
+void Transmitter::add(Packing * packing)
+{
+    this->getQueue()->push_back(packing);
+}
+
+/**
+ * Add packet to queue
+ */
+void Transmitter::add(Packet * packet, bool withConfirm)
+{
+    Packing * packing = new Packing(packet, withConfirm);
+
+    this->add(packing);
+}
+
+/**
+ * Add packet to queue (without confirm)
+ */
+void Transmitter::add(Packet * packet)
+{
+    this->add(packet, false);
+}
+
+/**
+ * Listen packets and if receive, forward to action manager for process
+ * and set timeout time to receive packet in millisecond
+ *
+ * @return bool True if packet received during listen process
+ */
+bool Transmitter::listen(unsigned int timeout)
+{
+    //Serial.println(F("Transmitter: Listen packet..."));
+
+    // Confirm packet
+    Packet * packetOk = NULL;
+
+    Packet * response = NULL;
+    int i = 0;
+
+    bool last = false;
+    // Waiting for response
+    while (!last && this->getReceiver()->listen(timeout)) {
+        i++;
+
+        response = this->getReceiver()->getResponse();
+
+        // Confirm packet in sended queue
+        if (response->getCommand() == Command::OK) {
+            this->confirm(response);
+        } // Prepare success receiving response (not send yet)
+        else {
+            packetOk = this->generatePacketOK();
+            packetOk->setTarget(response->getSourceIdentifier());
+            packetOk->setDataUChar1(response->getId());
+            packetOk->setDate(0);
+            this->add(packetOk);
+        }
+
+        // Processing
+        if (this->hasActionManager()) {
+            this->actionManager->processPacket(response);
+        }
+
+        // Check flag last. If true, waiting for another response
+        last = response->isLast();
+
+        // Clean receiver response (no need this instance anymore)
+        this->getReceiver()->cleanResponse();
+    }
+
+    //Serial.print(F("Transmitter: Stop listening. "));
+    //Serial.print(i);
+    //Serial.println(F(" packet received and processed."));
+
+    // Clean response (no more used)
+    this->getReceiver()->cleanResponse();
+
+    return i > 0;
+}
+
+/**
+ * Confirm packet if possible
+ */
+void Transmitter::confirm(Packet * response)
+{
+    if (response->getCommand() == Command::OK) {
+        Packing *packing = NULL;
+        // Search packet in sended queue
+        unsigned int size = this->getQueueSended()->size();
+        for (unsigned int i = 0; i < size; i++) {
+            packing = this->getQueueSended()->at(i);
+
+            // Remove packing if id match (confirmed)
+            if (packing->isNeedConfirm() && packing->getPacket()->getId() == response->getDataUChar1()) {
+                packing->setConfirmed(true);
+                delete packing;
+                packing = NULL;
+
+                this->getQueueSended()->erase(this->getQueueSended()->begin() + i);
+                i--;
+                size--;
+            }
+        }
+    }
+}
+
+/**
+ * Generate OK packet for confirm response
+ */
+Packet * Transmitter::generatePacketOK()
+{
+    Packet *packet = new Packet();
+    packet->setCommand(Command::OK);
+
+    if (this->hasPropertySensorIdentifier()) {
+        packet->setSourceIdentifier(this->propertySensorIdentifier->get());
+    }
+    if (this->hasPropertySensorType()) {
+        packet->setSourceType(this->propertySensorType->get());
+    }
+
+    return packet;
+}
+
+/**
+ * Get queue
+ */
+vector<Packing *>* Transmitter::getQueue()
+{
+    return this->queue;
+}
+
+/**
+ * Send packet without checking for response confirmation
+ */
+bool Transmitter::send(Packing * packing)
+{
+    packing->setSended(true);
+
+    return this->getRequester()->send(packing);
 }
 
 /**
@@ -68,6 +303,22 @@ unsigned int Transmitter::getDefaultTTL()
 void Transmitter::setDefaultTTL(unsigned int ttl)
 {
     defaultTtl = ttl;
+}
+
+/**
+ * Get max packet allowed in queue
+ */
+unsigned int Transmitter::getMaxPacketQueue()
+{
+    return maxPacketQueue;
+}
+
+/**
+ * Set max packet allowed in queue
+ */
+void Transmitter::setMaxPacketQueue(unsigned int max)
+{
+    maxPacketQueue = max;
 }
 
 /**
