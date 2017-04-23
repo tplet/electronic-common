@@ -27,6 +27,18 @@ namespace com {
                         ss << (value < 10 ? "0" : "") << (int)value;
                         return ss.str();
                     }
+
+                    /**
+                     * Convert int to string
+                     *
+                     * @param int value
+                     */
+                    static string intToString(int value)
+                    {
+                        stringstream ss;
+                        ss << value;
+                        return ss.str();
+                    }
                 };
             }
         }
