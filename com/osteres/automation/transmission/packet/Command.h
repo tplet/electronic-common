@@ -57,6 +57,10 @@ namespace com
                          * Response contains a sensor identifier
                          */
                         static unsigned char const IDENTIFIER_RESPONSE = 0x07;
+                        /**
+                         * Send battery level
+                         */
+                        static unsigned char const BATTERY = 0x08;
                     };
                 }
             }
