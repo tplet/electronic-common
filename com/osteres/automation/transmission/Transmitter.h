@@ -72,8 +72,6 @@ namespace com
                                 this->receiver->setPropertySensorIdentifier(this->propertySensorIdentifier);
                             }
                         }
-
-                        //Serial.println(F("Transmitter: Setup done."));
                     }
 
                     /**

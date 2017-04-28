@@ -55,6 +55,9 @@ namespace com
                                 case Command::IDENTIFIER_RESPONSE:
                                     s = "IDENTIFIER_RESPONSE";
                                     break;
+                                case Command::BATTERY:
+                                    s = "BATTERY";
+                                    break;
                                 default:
                                     s = "";
                                     break;
