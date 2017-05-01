@@ -30,7 +30,7 @@ namespace com
                         /**
                          * Transpose command code to string representation
                          */
-                        static string toString(unsigned char command)
+                        static string commandToString(unsigned char command)
                         {
                             string s;
                             switch (command) {
@@ -69,7 +69,7 @@ namespace com
                         /**
                          * Transpose channel code to string representation
                          */
-                        static string toString(unsigned long long channel)
+                        static string channelToString(unsigned long long channel)
                         {
                             string s;
                             switch (channel) {
