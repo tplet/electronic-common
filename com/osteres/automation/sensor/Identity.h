@@ -44,6 +44,20 @@ namespace com
                      * @used by Weather sensor
                      */
                     static unsigned char const WEATHER = 0x03;
+                    /**
+                     * Movement sensor
+                     * Detect movement in room
+                     *
+                     * @used by Movement sensor
+                     */
+                    static unsigned char const MOVEMENT = 0x04;
+                    /**
+                     * Remote controlled power supply
+                     * Control power supply from server or another sensor
+                     *
+                     * @used by Remote controlled power supply
+                     */
+                    static unsigned char const REMOTE_CONTROLLED_POWER = 0x05;
                 };
             }
         }
