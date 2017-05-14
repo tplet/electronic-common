@@ -61,6 +61,10 @@ namespace com
                          * Send battery level
                          */
                         static unsigned char const BATTERY = 0x08;
+                        /**
+                         * Enable on/off - 1/0
+                         */
+                        static unsigned char const ENABLE = 0x09;
                     };
                 }
             }
