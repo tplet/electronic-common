@@ -52,12 +52,12 @@ namespace com
                      */
                     static unsigned char const MOVEMENT = 0x04;
                     /**
-                     * Remote controlled power supply
-                     * Control power supply from server or another sensor
+                     * Controlled switch
+                     * Open and close switch from remote control
                      *
-                     * @used by Remote controlled power supply
+                     * @used by Controlled time switch actuator
                      */
-                    static unsigned char const REMOTE_CONTROLLED_POWER = 0x05;
+                    static unsigned char const SWITCH = 0x05;
                 };
             }
         }
