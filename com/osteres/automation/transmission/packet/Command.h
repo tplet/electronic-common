@@ -65,6 +65,14 @@ namespace com
                          * Enable on/off - 1/0
                          */
                         static unsigned char const ENABLE = 0x09;
+                        /**
+                         * Ping to keep alive device
+                         */
+                        static unsigned char const PING = 0x10;
+                        /**
+                         * Config to change configuration of device
+                         */
+                        static unsigned char const CONFIG = 0x11;
                     };
                 }
             }
