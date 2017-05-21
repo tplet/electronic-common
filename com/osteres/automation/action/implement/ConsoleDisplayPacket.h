@@ -30,10 +30,10 @@ namespace com
                          * Output packet to console
                          * (not works on arduino)
                          */
-                        bool execute(Packet * packet)
+                        bool execute(Packet * packet, bool receive = true)
                         {
                             cout << endl;
-                            cout << "Packet received! (size: " << sizeof(*packet) << ")" << endl;
+                            cout << "Packet " << (receive ? "received" : "sended") << "! (size: " << sizeof(*packet) << ")" << endl;
                             cout << "-- Packet content --" << endl;
                             cout << "Id: " << (int)packet->getId() << " Last: " << (packet->isLast() ? "yes" : "no")
                             << " date: " << packet->getDate() << endl;
