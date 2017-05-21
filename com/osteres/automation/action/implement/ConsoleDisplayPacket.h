@@ -39,7 +39,7 @@ namespace com
                             << " date: " << packet->getDate() << endl;
                             cout << "From type: " << (int)packet->getSourceType() << " id: " << (int)packet->getSourceIdentifier()
                             << " To: " << (int)packet->getTarget() << endl;
-                            cout << "Command: " << CommandString::toString(packet->getCommand()) << endl;
+                            cout << "Command: " << CommandString::commandToString(packet->getCommand()) << endl;
                             cout << "UC1: " << (unsigned int)packet->getDataUChar1() << " UC2: " << (unsigned int)packet->getDataUChar2()
                             << " UC3: " << (unsigned int)packet->getDataUChar3() << endl;
                             cout << "L1: " << packet->getDataLong1() << " L2: " << packet->getDataLong2()

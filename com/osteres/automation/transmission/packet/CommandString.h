@@ -58,6 +58,15 @@ namespace com
                                 case Command::BATTERY:
                                     s = "BATTERY";
                                     break;
+                                case Command::ENABLE:
+                                    s = "ENABLE";
+                                    break;
+                                case Command::PING:
+                                    s = "PING";
+                                    break;
+                                case Command::CONFIG:
+                                    s = "CONFIG";
+                                    break;
                                 default:
                                     s = "";
                                     break;
