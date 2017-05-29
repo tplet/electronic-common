@@ -32,6 +32,34 @@ Packet::Packet(uint8_t sourceType, uint8_t id)
 }
 
 /**
+ * Copy constructor
+ */
+Packet::Packet(Packet * packet)
+{
+    this->resetData();
+
+    this->setId(packet->getId());
+    this->setSourceType(packet->getSourceType());
+    this->setSourceIdentifier(packet->getSourceIdentifier());
+    this->setCommand(packet->getCommand());
+    this->setDate(packet->getDate());
+    this->setLast(packet->isLast());
+    this->setTarget(packet->getTarget());
+
+    this->setDataChar1(packet->getDataChar1());
+    this->setDataChar2(packet->getDataChar2());
+    this->setDataChar3(packet->getDataChar3());
+    this->setDataUChar1(packet->getDataUChar1());
+    this->setDataUChar2(packet->getDataUChar2());
+    this->setDataUChar3(packet->getDataUChar3());
+    this->setDataLong1(packet->getDataLong1());
+    this->setDataLong2(packet->getDataLong2());
+    this->setDataLong3(packet->getDataLong3());
+    this->setDataLong4(packet->getDataLong4());
+
+}
+
+/**
  * Destructor
  */
 Packet::~Packet()

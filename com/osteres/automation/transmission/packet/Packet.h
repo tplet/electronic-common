@@ -35,6 +35,11 @@ namespace com
                         Packet(uint8_t sourceType, uint8_t id);
 
                         /**
+                         * Copy constructor
+                         */
+                        Packet(Packet * packet);
+
+                        /**
                          * Destructor
                          */
                         ~Packet();
